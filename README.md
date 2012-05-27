@@ -57,4 +57,7 @@ Some of the key next things to get done on JResponder are:
 * Open and click tracking
 * Review the idea of adding general email sending as a main feature.  Not sure yet if this is wise or foolhardy
 
+# License
+
+JResponder is licensed under the Apache 2.0 license.
 
