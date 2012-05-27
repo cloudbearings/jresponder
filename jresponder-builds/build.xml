@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<project name="jresponder-builds" default="all" basedir=".">
+
+    <description>
+        Build all jresponder parts
+    </description>
+
+    <!-- set global properties -->
+    <property name="dist"           location="dist"/>
+
+    <target name="init">
+        <tstamp/>
+        <mkdir dir="${dist}"/>
+    </target>
+
+    <!-- see if tomcat is downloaded -->
+    <target name="all" depends="init">
+
+        
+
+        <!-- build everything we need -->
+        <ant antfile="../jresponder-standalone/build.xml"   target="dist"       inheritall="false"/>
+        <ant antfile="../jresponder/build.xml"              target="all"        inheritall="false"/>
+
+        <!-- copy stuff into place -->
+
+        <copy file="../jresponder/dist/jresponder.jar"          tofile="${dist}/jresponder.jar"/>
+        <copy file="../jresponder/dist/jresponder-javadoc.zip"  tofile="${dist}/jresponder-javadoc.zip"/>
+        <copy file="../jresponder-web/dist/jresponder-web.war"  tofile="${dist}/jresponder-web.war"/>
+        <copy file="../jresponder-standalone/dist/jresponder-standalone.tar.gz" tofile="${dist}/jresponder-standalone.tar.gz"/>
+
+    </target>
+
+
+    <target name="clean" description="clean">
+        <delete dir="${dist}" />
+    </target>
+
+    <target name="clean-all" depends="clean" description="clean all projects - for a full rebuild">
+        <ant antfile="../jresponder-standalone/build.xml"   target="clean" inheritall="false"/>
+        <ant antfile="../jresponder-standalone/build.xml"   target="clean-downloads" inheritall="false"/>
+        <ant antfile="../jresponder-web/build.xml"          target="clean" inheritall="false"/>
+        <ant antfile="../jresponder/build.xml"              target="clean" inheritall="false"/>
+        <ant antfile="../jresponder-deps/build.xml"         target="clean" inheritall="false"/>
+    </target>
+
+</project>

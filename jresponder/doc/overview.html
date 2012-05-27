@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>JResponder - An auto-responder system written in Java</title>
+</head>
+<body>
+
+<p>
+JResponder was written to be a simple yet powerful system to automatically
+send email responses to your mailing list(s).
+
+<p>
+This project is based on common enterprise-class frameworks - Spring and
+Hibernate being the most notable.
+
+<p>
+Key features include:
+<ul>
+<li>Standalone version gets you up and running in minutes with an embedded
+(H2) database, and.
+<li>Built on common enterprise-class technologies like Spring and Hibernate.
+Should be familiar to many Java developers.
+<li>API is built with a moderate amount of extension feasible.  I say moderate
+because while the project is overall decently structured, a few things were
+done leaning toward simplicity instead of extensibility.  Minor additions
+should be simple and easy to implement.  Major changes like using a different
+language (other than Velocity) for messages, or using messages from a
+database rather than on disk - those types of changes, while possible, were
+not really the goal of this project.  Instead I've tried to make sure the
+most common types of extensions would be easy, and keep the system overall
+simple and easy to run and configure.
+<li>Shoudl scale to hundreds of thousands of subscribers (possibly millions,
+has not been fully tested as of this writing).
+<li>Standalone (bundled with Tomcat) and WebApp (.war) builds available.
+<li>Licensed under the Apache 2.0 license.
+</ul>
+
+<p>
+See the package descriptions to get an idea of the different pieces of
+the JResponder project.
+<p>
+The standalone conf/jresponder.xml file is a Spring XML file.  That is
+also a good place to look to get an idea of some of the key components
+and integration points (especially the configurable ones) of the system.
+
+</body>
+</html>

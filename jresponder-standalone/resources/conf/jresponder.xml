@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!-- ======================================================================= -->
+<!-- JResponder configuration file.                                          -->
+<!-- Default settings are sensible out of the box.  Most common options are  -->
+<!-- described in the comments below.  Next to each area which is intended   -->
+<!-- to be changed, "CONFIG" appears - adjust those.  Other properties are   -->
+<!-- in there and needed for the overall configuration, don't touch them     -->
+<!-- unless the comments say to or you're familiar Java+Spring+Hibernate     -->
+<!-- dev and know what you're doing.                                         -->
+<!-- ======================================================================= -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:sec="http://www.springframework.org/schema/security"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-3.0.xsd
+           http://www.springframework.org/schema/security
+           http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+    <!-- =================================================================== -->
+    <!-- Database connection -                                               -->
+    <!-- Default is local embedded H2 database.  Most common properties      -->
+    <!-- that need to be changed are driverClass, jdbcUrl, user and          -->
+    <!-- password. NOTE: if you change over to MySQL or other database       -->
+    <!-- you also need to change the "dialect", see next section below.      -->
+    <!-- =================================================================== -->
+    <bean id="jrDataSource"
+                class="com.mchange.v2.c3p0.ComboPooledDataSource"
+                destroy-method="close">
+
+        <!-- CONFIG
+             database connection - default embedded H2 database, in the /data/
+             directory -->
+        <property name="driverClass"    value="org.h2.Driver" />
+        <property name="jdbcUrl"        value="jdbc:h2:${jresponder.basedir}/data/jresponder" />
+        <property name="user"           value="sa"/>
+        <property name="password"       value=""/>
+
+        <!-- example for mysql, use instead of H2 above for a production
+             setup -->
+        <!--
+        <property name="driverClass"    value="com.mysql.jdbc.Driver" />
+        <property name="jdbcUrl"        value="jdbc:mysql://localhost/jresponder" />
+        <property name="user"           value="jresponder"/>
+        <property name="password"       value="jresponder"/>
+        -->
+
+        <!-- NOTE: if you use a different database provider (other than H2
+             or MySQL), you'll need to download the JDBC driver for it 
+             and put it in tomcat/webapps/ROOT/WEB-INF/lib -->
+
+        <!-- CONFIG (advanced) tune the connection pooling -->
+        <property name="acquireIncrement"           value="5"/>
+        <property name="idleConnectionTestPeriod"   value="60"/>
+        <property name="maxPoolSize"                value="100"/>
+        <property name="maxStatements"              value="50"/>
+        <property name="minPoolSize"                value="3"/>
+
+    </bean>
+    <bean id="jrEntityManagerFactory" class="org.jresponder.standalone.JrEntityManagerFactory">
+    
+        <property name="addProps">
+            <map>
+
+                <!-- CONFIG
+                     which datebase "dialect" to use - default is embedded H2 -
+                     use the appropriate one for your database from the options
+                     below or see Hibernate documentation (hibernate.org) -->
+                <entry key="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/> 
+
+                <!--        
+                                                      MySQL5+:
+                                                      org.hibernate.dialect.MySQL5Dialect
+
+                                                      MySQL5+ with InnoDB:
+                                                      org.hibernate.dialect.MySQL5InnoDBDialect  
+                                                    
+                                                      Legacy MySQL:
+                                                      org.hibernate.dialect.MySQLDialect
+                                                      org.hibernate.dialect.MySQLInnoDBDialect
+                                                      org.hibernate.dialect.MySQLMyISAMDialect
+
+                                                      PostgreSQL:
+                                                      org.hibernate.dialect.PostgreSQLDialect
+
+                                                      MSSQL 2008+:
+                                                      org.hibernate.dialect.SQLServer2008Dialect
+
+                                                      MSSQL Legacy:
+                                                      org.hibernate.dialect.SQLServerDialect
+                -->
+
+
+                <!-- CONFIG
+                     automatically update the database schema -
+                     WARNING - IMPORTANT:
+                     in a production environment, you should set up your
+                     database and get everything working, and then
+                     come back and comment out this line - otherwise
+                     a future upgrade might cause data lose due to
+                     the database schema being upgraded unintentionally -->
+                <entry key="hibernate.hbm2ddl.auto" value="update"/>
+
+
+            </map>
+        </property>
+        
+        <!-- don't touch -->
+        <property name="dataSource" ref="jrDataSource" />
+        <property name="jpaVendorAdapter" ref="jrJpaVendorAdapter"/>
+        
+    </bean>
+
+    <!-- =================================================================== -->
+    <!-- Web security config -                                               -->
+    <!-- Default is admin is only accessible via localhost.  Using the       -->
+    <!-- config below you can restrict by IP, by username/password or both.  -->
+    <!-- =================================================================== -->
+    <sec:http auto-config="true" use-expressions="true">
+
+        <!-- CONFIG -->
+        <sec:intercept-url pattern="/*" access="(hasIpAddress('127.0.0.1'))"/>
+
+    </sec:http>
+
+    <sec:authentication-manager>
+      <sec:authentication-provider>
+        <sec:user-service>
+
+            <!-- CONFIG -->
+            <sec:user name="test2" password="123456" authorities="ROLE_USER" />
+
+        </sec:user-service>
+      </sec:authentication-provider>
+    </sec:authentication-manager>
+
+    <!-- =================================================================== -->
+    <!-- Message configuration -                                             -->
+    <!-- Where and how your autoresponder messages live.                     -->
+    <!-- =================================================================== -->
+    <bean id="jrMessageGroupSource" class="org.jresponder.message.MessageGroupSourceImpl">
+
+        <!-- CONFIG
+             If you need to, you can change this, but default is often fine.
+             Underneath this folder, there should be one subfolder that
+             corresponds to each message group (which is essentially a list
+             that someone can subscribe to).  In those folders, there are
+             messages which are .html files in a special format. So,
+             for example, .../messages/mylist/message1.html
+             -->
+        <property name="directory" value="${jresponder.basedir}/messages"/>
+
+    </bean>
+
+    <!-- =================================================================== -->
+    <!-- SMTP configuration -                                                -->
+    <!-- Where to physically send your mail.                                 -->
+    <!-- =================================================================== -->
+    <bean id="jrJavaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+
+        <!-- CONFIG - adjust host and port as needed -->
+        <property name="host" value="localhost"/>
+        <property name="port" value="25"/>
+
+    </bean>
+    
+    <!-- =================================================================== -->
+    <!-- Send configurations                                                 -->
+    <!-- Additional settings used while generating messages                  -->
+    <!-- =================================================================== -->
+    <!-- the send configurations -->
+    <bean id="jrSendConfigGroup" class="org.jresponder.engine.SendConfigGroup">
+    
+        <property name="sendConfigList">
+            <list>
+            
+                <!-- CONFIG
+                     This is a "SendConfig" - define one for each type of
+                     sending you need to do.  This usually corresponds to
+                     one domain/DKIM setup. NOTE: DKIM not yet implemented -->
+                <bean class="org.jresponder.engine.SendConfig">
+                
+                    <!-- regular expression pattern of which message groups
+                         to apply to, comment this out to match all -->
+                    <property name="filterMessageGroup" value="list1"/>
+                    
+                    <!-- the sender email address pattern, interpreted as 
+                         Velocity in a similar context as the message -->
+                    <property name="senderEmailPattern" value="messages-$!{subscription.id}@example.com"/>
+                    
+                    <!-- you can put arbitrary stuff here that you need to
+                         access from the messages or from custom code -->
+                    <property name="additional">
+                        <map>
+                            <entry key="site_url" value="http://localhost:6680/sample-site/"/>
+                            <entry key="some_additional_data" value="the_value"/>
+                        </map>
+                    </property>
+                    
+                </bean>
+                
+            </list>
+        </property>
+    
+    
+    </bean>
+
+
+</beans>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-3.1.xsd
+           ">
+
+    <!-- a safe bet for a default -->
+    <bean id="jrJavaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="localhost"/>
+        <property name="port" value="25"/>
+    </bean>
+    
+    <!-- the send configurations -->
+    <bean id="jrSendConfigGroup" class="org.jresponder.engine.SendConfigGroup">
+    
+        <property name="sendConfigList">
+            <list>
+            
+                <!-- CONFIG
+                     This is a "SendConfig" - define one for each type of
+                     sending you need to do.  This usually corresponds to
+                     one domain/DKIM setup. -->
+                <bean class="org.jresponder.engine.SendConfig">
+                
+                    <!-- regular expression pattern of which message groups
+                         to apply to, comment this out to match all -->
+                    <property name="filterMessageGroup" value="list1"/>
+                    
+                    <!-- the sender email address pattern, interpreted as 
+                         Velocity in a similar context as the message -->
+                    <property name="senderEmailPattern" value="messages-$!{subscription.id}@example.com"/>
+                    
+                    <!-- you can put arbitrary stuff here that you need to
+                         access from the messages or from custom code -->
+                    <property name="additional">
+                        <map>
+                            <entry key="site_url" value="http://localhost:8080/jresponder-web/sample-site/"/>
+                            <entry key="some_additional_data" value="the_value"/>
+                        </map>
+                    </property>
+                    
+                </bean>
+                
+            </list>
+        </property>
+    
+    
+    </bean>
+
+</beans>

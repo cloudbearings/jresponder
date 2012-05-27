@@ -1,0 +1,63 @@
+<ivy-module version="2.0">
+    <info organisation="com.myspotontheweb" module="demo"/>
+    <configurations>
+        <conf name="jars"           description="Jars"/>
+        <conf name="jarhacks"     description="Jars with naming hacks"/>
+    </configurations>
+    <dependencies>
+
+        <!-- NOTE: I've made it a general habit to specify the first two numbers
+             in the version but leave the last as "+".  This way we get bug
+             fixes and minor enhancements, but avoid breaking everything by
+             automatically using major new versions.
+
+             If you want to add stuff, see http://http://search.maven.org/
+
+             NB: If you've downloaded everything already, and you just need to
+             add something real quick without waiting for ivy to check
+             everything all over again - a hack is you can delete lib/.downlaoded
+             and comment out all but the library you want to download
+             from the list below and run 'ant' again.
+             -->
+
+        <dependency org="org.springframework"                   name="spring-core"              rev="3.1.+" conf="jars->default"/>
+        <dependency org="org.springframework"                   name="spring-beans"             rev="3.1.+" conf="jars->default"/>
+        <dependency org="org.springframework"                   name="spring-tx"                rev="3.1.+" conf="jars->default"/>
+        <dependency org="org.springframework"                   name="spring-context-support"   rev="3.1.+" conf="jars->default"/>
+        <dependency org="org.springframework"                   name="spring-orm"               rev="3.1.+" conf="jars->default"/>
+        <dependency org="org.springframework"                   name="spring-aop"               rev="3.1.+" conf="jars->default"/>
+        <dependency org="org.springframework"                   name="spring-webmvc"            rev="3.1.+" conf="jars->default"/>
+        <dependency org="org.springframework.security"          name="spring-security-core"     rev="3.1.+" conf="jars->default"/>
+        <dependency org="org.springframework.security"          name="spring-security-config"   rev="3.1.+" conf="jars->default"/>
+        <dependency org="org.springframework.security"          name="spring-security-web"      rev="3.1.+" conf="jars->default"/>
+        <dependency org="org.springframework.security"          name="spring-security-acl"      rev="3.1.+" conf="jars->default"/>
+        <dependency org="org.springframework.security"          name="spring-security-taglibs"  rev="3.1.+" conf="jars->default"/>
+
+        <dependency org="org.hibernate"                         name="hibernate-core"           rev="4.1.+" conf="jars->default"/>
+        <dependency org="org.hibernate"                         name="hibernate-entitymanager"  rev="4.1.+" conf="jars->default"/>
+        <dependency org="org.hibernate"                         name="hibernate-c3p0"           rev="4.1.+" conf="jars->default"/>
+
+        <dependency org="cglib"                                 name="cglib-nodep"              rev="+"     conf="jars->default"/>
+        <dependency org="asm"                                   name="asm-all"                  rev="+"     conf="jars->default"/>
+
+        <dependency org="com.h2database"                        name="h2"                       rev="1.3.+" conf="jars->default"/>
+        <dependency org="mysql"                                 name="mysql-connector-java"     rev="5.+"   conf="jars->default"/>
+
+        <dependency org="org.slf4j"                             name="slf4j-log4j12"            rev="1.+"   conf="jars->default"/>
+
+        <dependency org="org.jsoup"                             name="jsoup"                    rev="1.+"   conf="jars->default"/>
+        <dependency org="joda-time"                             name="joda-time"                rev="2.+"   conf="jars->default"/>
+
+        <dependency org="org.apache.velocity"                   name="velocity"                 rev="1.7"   conf="jars->default"/>
+
+        <dependency org="javax.mail"                            name="mail"                     rev="1.+"   conf="jars->default"/> 
+        <dependency org="javax.servlet"                         name="javax.servlet-api"        rev="+"     conf="jars->default"/>
+
+        <!-- listed as hacks because renaming is done from build.xml after download -->
+        <dependency org="net.minidev"                           name="json-smart"               rev="+"     conf="jarhacks->default"/>
+        <dependency org="net.minidev"                           name="asm"                      rev="+"     conf="jarhacks->default"/>
+
+
+    </dependencies>
+</ivy-module>
+

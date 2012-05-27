@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+        version="2.0">
+    
+    <persistence-unit name="org.jresponder.PU" transaction-type="RESOURCE_LOCAL">
+    
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        
+        <class>org.jresponder.domain.Subscriber</class>
+        
+        <properties>
+            <property name="hibernate.id.new_generator_mappings" value="true"/>
+            
+            <!-- 
+            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.show_sql" value="false"/>
+		    <property name="hibernate.connection.driver_class" value="org.h2.Driver"/>
+		    <property name="hibernate.connection.url" value="jdbc:h2:jrespondertest"/>
+		    <property name="hibernate.connection.username" value="sa"/>
+		    <property name="hibernate.connection.password" value=""/>
+            <property name="hibernate.c3p0.min_size" value="5"/>
+            <property name="hibernate.c3p0.max_size" value="20"/>
+            <property name="hibernate.c3p0.timeout" value="1800"/>
+            <property name="hibernate.c3p0.max_statements" value="50"/>
+		     -->
+		    
+
+		    <!-- JDBC connection pool (use the built-in) -->
+		    <!--  property name="hibernate.connection.pool_size" value="1"/ -->
+		
+		    <!-- Enable Hibernate's automatic session context management -->
+		    <property name="hibernate.current_session_context_class" value="thread"/>
+		
+		    <!-- Disable the second-level cache  
+		    <property name="hibernate.cache.provider_class" value="org.hibernate.cache.internal.NoCacheProvider"/>
+		    -->
+
+        </properties>
+        
+    </persistence-unit>
+
+</persistence>

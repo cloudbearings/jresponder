@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<project name="jresponder-web" default="dist" basedir=".">
+
+    <description>
+        Build file for jresponder-web - builds sources specific to this
+        project and packages a war file
+    </description>
+
+    <!-- set global properties for this build -->
+    <property name="src" location="src"/>
+    <property name="build" location="build"/>
+    <property name="dist" location="dist"/>
+    <property name="web-content" location="WebContent"/>
+
+    <target name="init">
+        <!-- Create the time stamp -->
+        <tstamp/>
+        <!-- make sure jresponder is built up to date -->
+        <ant antfile="../jresponder/build.xml" target="dist" inheritall="false"/>
+        <!-- Create the build directory structure used by compile -->
+        <mkdir dir="${build}"/>
+
+        <!-- all dependencies, plus jresponder.jar -->
+        <path id="all.jars">
+            <fileset dir="../jresponder-deps/lib/">
+                <include name="**/*.jar"/>
+            </fileset>
+            <fileset dir="../jresponder/dist/">
+                <include name="**/*.jar"/>
+            </fileset>
+        </path>
+
+    </target>
+
+    <target name="compile" depends="init" description="compile the source ">
+        <mkdir dir="${build}/WEB-INF/classes"/>
+        <javac srcdir="${src}" destdir="${build}/WEB-INF/classes">
+            <classpath refid="all.jars" />
+        </javac>
+        <copy todir="${build}/WEB-INF/classes">
+            <fileset dir="${src}" excludes="**/*.java"/>
+        </copy>
+    </target>
+
+    <target name="copy-content" depends="compile" description="copy the web content into place">
+        <copy todir="${build}">
+            <fileset dir="${web-content}"/>
+        </copy>
+
+        <mkdir dir="${build}/WEB-INF/lib"/>
+        <copy todir="${build}/WEB-INF/lib">
+            <fileset dir="../jresponder-deps/lib" includes="**/*.jar" excludes="**/javax.servlet-api.jar"/>
+            <fileset dir="../jresponder/dist" includes="**/*.jar"/>
+        </copy>
+    </target>
+
+    <target name="dist" depends="copy-content" description="generate the war file">
+        <mkdir dir="${dist}"/>
+        <zip destfile="${dist}/jresponder-web.war" basedir="${build}"/>
+    </target>
+
+    <target name="clean" description="clean up">
+        <!-- Delete the ${build} and ${dist} directory trees -->
+        <delete dir="${build}"/>
+        <delete dir="${dist}"/>
+    </target>
+
+</project>

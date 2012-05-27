@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+<project name="jresponder-standalone" default="build" basedir=".">
+
+    <description>
+        Build file for jresponder-standalone - packages up
+        the jresponder-web webapp with Apache Tomcat and
+        puts things in place so this is easy to run
+        with just one command and have a simple config.
+    </description>
+
+    <!-- set global properties -->
+    <property name="tomcat-name"    value="apache-tomcat-7.0.27"/>
+                                    <!-- I would love to make this download URL be dynamic and find a close mirror - couldn't see how... -->
+    <property name="tomcat-url"     value="http://mirrors.ibiblio.org/apache/tomcat/tomcat-7/v7.0.27/bin/apache-tomcat-7.0.27.tar.gz"/>
+    <property name="tomcat"         value="tomcat"/>
+    <property name="downloads"      location="downloads"/>
+    <property name="resources"      location="resources"/>
+    <property name="build"          location="build"/>
+    <property name="buildtmp"       location="buildtmp"/>
+    <property name="dist"           location="dist"/>
+
+    <target name="init">
+        <tstamp/>
+        <mkdir dir="${build}"/>
+        <mkdir dir="${buildtmp}"/>
+        <mkdir dir="${downloads}"/>
+    </target>
+
+    <!-- see if tomcat is downloaded -->
+    <target name="download-check">
+        <available file="${downloads}/${tomcat-name}.tar.gz" property="downloaded"/>
+    </target>
+
+    <!-- download tomcat if not already -->
+    <target name="download" depends="download-check" unless="downloaded">
+        <get src="${tomcat-url}" dest="${downloads}/${tomcat-name}.tar.gz" verbose="on"/>
+    </target>
+
+    <target name="build" depends="init,download" description="unpack and copy things around">
+
+        <!-- build/update the war file -->
+        <ant antfile="../jresponder-web/build.xml" target="dist" inheritall="false"/>
+
+        <!-- unpack tomcat from original file -->
+        <!-- unzip src="${downloads}/${tomcat-name}.zip" dest="${buildtmp}"/ -->
+        <untar src="${downloads}/${tomcat-name}.tar.gz" compression="gzip" dest="${buildtmp}"/>
+        <!-- rename it -->
+        <move file="${buildtmp}/${tomcat-name}" tofile="${buildtmp}/${tomcat}" />
+
+        <!--
+        <exec executable="/bin/echo">
+            <arg line="testing123"/>
+        </exec>
+        <exec dir="${buildtmp}/${tomcat}/bin" executable="/bin/sh" >
+            <arg line="-c 'chmod -v 755 ${buildtmp}/${tomcat}/bin/*.sh'"/>
+        </exec>
+        -->
+
+        <!-- delete default stuff we don't need from tomcat -->
+        <delete dir="${buildtmp}/tomcat/webapps/ROOT"/>
+        <delete dir="${buildtmp}/tomcat/webapps/docs"/>
+        <delete dir="${buildtmp}/tomcat/webapps/examples"/>
+
+        <!-- replace out default tomcat settings with our own -->
+        <!-- port numbers -->
+        <replace file="${buildtmp}/tomcat/conf/server.xml" token="8005" value="6605"/>
+        <replace file="${buildtmp}/tomcat/conf/server.xml" token="8009" value="6609"/>
+        <replace file="${buildtmp}/tomcat/conf/server.xml" token="8080" value="6680"/>
+        <replace file="${buildtmp}/tomcat/conf/server.xml" token="8443" value="6643"/>
+
+        <!-- now copy temp mangled tomcat into build folder -->
+        <copy todir="${build}">
+            <fileset dir="${buildtmp}"/>
+        </copy>
+
+        <!-- make .sh files executable -->
+        <chmod dir="${build}/${tomcat}/bin" perm="ugo+rx" includes="**/*.sh" />
+        <chmod dir="${buildtmp}/${tomcat}/bin" perm="ugo+rx" includes="**/*.sh" />
+
+        <!-- copy resources over to build -->
+        <copy todir="${build}">
+            <fileset dir="${resources}"/>
+        </copy>
+
+        <!-- unpack the war file into place in build/tomcat -->
+        <unzip src="../jresponder-web/dist/jresponder-web.war" dest="${build}/${tomcat}/webapps/ROOT" />
+
+
+    </target>
+
+    <target name="dist" depends="build" description="generate the distribution">
+        <!-- Create the distribution directory -->
+        <mkdir dir="${dist}"/>
+        <!-- zip up the build -->
+        <zip destfile="${dist}/jresponder-standalone.zip">
+            <zipfileset dir="${build}" prefix="jresponder-standalone"/>
+        </zip>
+        <!-- also gzip it - just so we don't look like Windoze-lovers... -->
+        <tar destfile="${dist}/jresponder-standalone.tar">
+            <tarfileset dir="${build}" prefix="jresponder-standalone"/>
+        </tar>
+        <gzip destfile="${dist}/jresponder-standalone.tar.gz" src="${dist}/jresponder-standalone.tar"/>
+        <!-- delete the intermediate .tar file -->
+        <delete file="${dist}/jresponder-standalone.tar" />
+
+    </target>
+
+    <target name="clean" description="clean up">
+        <!-- Delete the ${build} and ${dist} directory trees -->
+        <delete dir="${build}"/>
+        <delete dir="${dist}"/>
+        <delete dir="${buildtmp}"/>
+    </target>
+
+    <target name="clean-downloads" description="remove downloads - made separate because it takes a while and doesn't need to be redone all the time during dev">
+        <delete dir="${downloads}"/>
+    </target>
+
+</project>

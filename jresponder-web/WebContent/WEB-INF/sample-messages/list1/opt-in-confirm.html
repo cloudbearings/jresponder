@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+                <!-- ======================================================= -->
+                <!-- The "opt-in-confirm" message has a special purpose.     -->
+                <!-- It is sent immediately after subscription, to confirm   -->
+                <!-- with the user that he in fact wants to be on the list.  -->
+                <!-- ======================================================= -->
+<html>
+<head>
+
+                <!-- ======================================================= -->
+                <!-- Message settings                                        -->
+                <!-- ======================================================= -->
+    <meta name="JR_SUBJECT"                    content="Hey! Weclome to our mailing list!"/>
+    <meta name="JR_FROM_EMAIL"                 content="joe@example.com"/>
+    <meta name="JR_FROM_NAME"                  content="Joe Doe"/>
+    
+</head>
+<body>
+
+                <!-- ======================================================= -->
+                <!-- HTML message body                                       -->
+                <!-- ======================================================= -->
+<div id="htmlbody">
+
+    <div style="width: 600px; margin: 20px; padding: 20px; border: 1px solid #999; border-radius: 5px; background: #eee">
+    
+        #if ($!{subscriber.propsMap.first_name})
+        <p>Dear $!{subscriber.propsMap.first_name},</p>
+        #end
+        
+        <p>Thanks for signing up!  In order for us to send you the cool emails
+        we said we would, we need you to click the link below to confirm that
+        this is the case.</p>
+        
+        <p>
+            <a href="http://localhost:6680/public/api/confirm.action?code=">
+                Yes, dude, I'm sure I want your emails (unless/until I unsubscribe).
+            </a>
+        </p>
+        
+        <p>Best, John</p>
+        
+    </div>
+    
+</div>
+
+                <!-- ======================================================= -->
+                <!-- Plain text message body                                 -->
+                <!-- ======================================================= -->
+<div id="textbody" style="display:none"><![CDATA[
+Dear ${firstName},
+
+This is a test.
+
+Best, John
+]]></div>
+
+                <!-- ======================================================= -->
+                <!-- That's it!                                              -->
+                <!-- ======================================================= -->
+
+</body>
+</html>

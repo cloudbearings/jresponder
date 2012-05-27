@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<project name="jresponder" default="all" basedir=".">
+
+    <description>
+        Build file for jresponder - builds the jar file
+    </description>
+
+    <!-- set global properties for this build -->
+    <property name="src" location="src"/>
+    <property name="build" location="build"/>
+    <property name="dist" location="dist"/>
+    <property name="javadoc" location="javadoc"/>
+    <property name="bin" location="bin"/>
+
+    <target name="init">
+        <!-- Create the time stamp -->
+        <tstamp/>
+        <!-- make sure we have deps -->
+        <ant antfile="../jresponder-deps/build.xml" target="default" inheritall="false"/>
+        <!-- Create the build directory structure used by compile -->
+        <mkdir dir="${build}"/>
+
+        <path id="all.jars">
+            <fileset dir="../jresponder-deps/lib/">
+                <include name="**/*.jar"/>
+            </fileset>
+        </path>
+
+    </target>
+
+    <target name="compile" depends="init" description="compile the source ">
+        <!-- Compile the java code from ${src} into ${build} -->
+        <javac srcdir="${src}" destdir="${build}">
+            <classpath refid="all.jars" />
+        </javac>
+        <copy todir="${build}">
+            <fileset dir="${src}" excludes="**/*.java"/>
+        </copy>
+    </target>
+
+    <target name="dist" depends="compile" description="generate the distribution">
+        <!-- Create the distribution directory -->
+        <mkdir dir="${dist}"/>
+        <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+        <jar jarfile="${dist}/jresponder.jar" basedir="${build}"/>
+    </target>
+
+    <target name="javadoc" depends="compile" description="makejavadoc">
+        <mkdir dir="${dist}"/>
+        <javadoc  
+            use='true' author='true'  version='true'
+            overview='doc/overview.html'  
+            access='package' 
+            sourcepath='${src}'
+            packagenames='*.*' 
+            destdir='${javadoc}'
+            windowtitle='jresponder'
+            noqualifier='java.*:javax.*:com.sun.*'   
+            linksource='true'
+            >
+            <classpath refid='all.jars'/>
+            <link href='http://java.sun.com/javase/6/docs/api/'/>
+            <link href="http://static.springsource.org/spring/docs/3.0.x/javadoc-api/"/>
+            <link href="http://docs.jboss.org/hibernate/core/4.1/javadocs/"/>
+            <header><![CDATA[<h1>jresponder</h1>]]></header>
+        </javadoc>
+        <!-- also zip it up and put it in dist -->
+        <zip destfile="${dist}/jresponder-javadoc.zip" >
+            <zipfileset dir="${javadoc}" prefix="jresponder-javadoc"/>
+        </zip>
+    </target>
+
+    <target name="all" depends="dist,javadoc" description="build dist and javadoc">
+        <!-- placeholder -->
+    </target>
+
+    <target name="clean" description="clean up">
+        <!-- Delete the ${build} and ${dist} directory trees -->
+        <delete dir="${build}"/>
+        <delete dir="${dist}"/>
+        <delete dir="${javadoc}"/>
+        <!-- remove eclipse build files as well -->
+        <delete dir="${bin}"/>
+    </target>
+
+</project>
