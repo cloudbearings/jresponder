@@ -1,7 +1,13 @@
 
 # file types to ignore
+
+# java binary class files
 *.class
 
+# mac junk
 .DS_Store
+
+# vim temp files
+*.swp
 
 

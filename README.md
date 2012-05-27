@@ -43,8 +43,20 @@ TODO
 # Building and Hacking
 
 1. Get the source from github... (git clone)
-2. Go to jresonder-builds and run "ant" - this will download and build everything
-3. Most of the JResponder code was written and initially test in Eclipse.  Once you have run the build above (which downloads the jar dependencies you'll need),  you can open the jresponder and jresponder-web projects in Eclipse and build/run from there as well.
+2. Go to jresonder-builds and run "ant" - this will download and build everything.  Note: this might take a while, as quite a few jars and a version of Tomcat get downloaded in the process.  Rough estimate: 15 min.
+3. While developing, it's faster to run "ant" from jresponder-standalone (where as jresponder-builds makes .tar.gz file and javadoc, which just slow you down for regular dev)
+3. The main source is in jresponder/src; the webapp is in jresponder-web/WebContent
+4. To run your jresponder build standalone, you can just do "jresponder-standalone/build/tomcat/bin/catalina.sh run" - that will run the standalone bundled tomcat instance with your build webapp in it.
+5. You can see the standalone webapp at: http://localhost:6680/
+
+## Developing with Eclipse
+
+Most of the JResponder code was written and initially tested in Eclipse. Here's how to get set up:
+
+* Follow the first two steps above - this is important as it downloads the jar files you need.  Otherwise Eclipse ain't gonna be able to do nothi'n.
+* Import each of these three Eclipse projects: jresponder-deps, jresponder, jresponder-web
+* You might need to right click -> refresh (or F5) on each of those for it show all files changes.
+* Now you can build and run the webapp using the normal Eclipse Tomcat deployment steps.  (You know - show servers, create a server if not done already, add/remove the web project to it, and press the little play button)
 
 # Roadmap
 
