@@ -4,9 +4,11 @@
 
 # Introduction
 
-JResponder is a relatively simple autoresponder email system.  Meaning you hook
-it up to your website so people subscribe to your mailing list and they are
-automatically sent a series of emails at particularly chosen intervals.
+JResponder is a relatively simple autoresponder email system.  Meaning you hook it up to your website so people subscribe to your mailing list and they are automatically sent a series of emails at particularly chosen intervals.
+
+Samples showing how to rapidly integrate JResponder into your website (using JQuery to call simple JSON web services), a robust (or at least getting more robust as we go along here) sending engine, and a very simple database schema with support for a zero-configuration embedded database or MySQL (or other DBMS supported by Hibernate) provide a workable email autoresponder system that you can use as-is or customize as you see fit.
+
+A standalone download bundles this project with Apache Tomcat, to make a version that runs "out of the box".  JResponder is also easy to customize if you're a Java developer.
 
 # Getting Started
 
@@ -52,7 +54,8 @@ Some of the key next things to get done on JResponder are:
 * Test message sending
 * Better/any administrative interface
 * DKIM support
-* Embedded mail server
+* Embedded mail server - for bounces and "re: unsubscribe" handling
+# Review the sending engine and see how we can make it more efficient (probably just having a configurable number of threads would work as immediate boost)
 * Mail server configuration/integration docs
 * Open and click tracking
 * Review the idea of adding general email sending as a main feature.  Not sure yet if this is wise or foolhardy
