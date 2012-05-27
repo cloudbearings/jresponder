@@ -24,6 +24,11 @@ JResponder is very young.  Aside from "in-development", the overall status of th
 
 The first JResponder builds and source tree were recently pushed to github, work is in progress on stabling it so we can have an official 0.1 release.
 
+# Requirements
+
+* Java 6/JDK 1.6
+* For web app deployment, a Java web container - tested with Tomcat 7.
+
 # Overview
 
 JResponder is pretty simple.  But here are the key concepts you should track with:
