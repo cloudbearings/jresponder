@@ -1,3 +1,5 @@
+![JResponder](/jresponder/jresponder/raw/master/jresponder-web/WebContent/assets/images/jresponder-logo.png)
+
 # JResponder
 
 ## An email autoresponder written in Java
