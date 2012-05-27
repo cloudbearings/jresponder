@@ -2,6 +2,8 @@
 
 ## An email autoresponder written in Java
 
+# COMING SOON! - This thing is still work in progress, big time.  You have been warned ;)
+
 # Introduction
 
 JResponder is a relatively simple autoresponder email system.  Meaning you hook it up to your website so people subscribe to your mailing list and they are automatically sent a series of emails at particularly chosen intervals.
@@ -62,6 +64,7 @@ Most of the JResponder code was written and initially tested in Eclipse. Here's 
 
 Some of the key next things to get done on JResponder are:
 
+* Complete the sample pages for subscription/unsubscription
 * Unit/regression tests
 * Test message sending
 * Better/any administrative interface
