@@ -28,6 +28,8 @@ If you just want to download JResponder to try it out, I suggest jresponder-stan
 
 Unpack that and have a look at the README file.
 
+TODO: Make sure there is a list somewhere - either here or in that README file that lists out 1, 2, 3, etc. the tour of the key things that one needs to configure and then test to get it so test messages actually send.  Strive for making this as simple as possible.
+
 # Project Status
 
 JResponder is very young.  Aside from "in-development", the overall status of this project is definitely EXPERIMENTAL.
@@ -79,7 +81,7 @@ Most of the JResponder code was written and initially tested in Eclipse. Here's 
 
 Some of the key next things to get done on JResponder are:
 
-* Complete the sample pages for subscription/unsubscription
+* Complete the sample pages for subscription/unsubscription, make it work cross domain with JSONP
 * Unit/regression tests
 * Test message sending
 * Better/any administrative interface
