@@ -13,55 +13,255 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/activation.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/antlr.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/aopalliance.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/c3p0.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/commons-logging.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/dom4j.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/hibernate-c3p0.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/hibernate-commons-annotations.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/hibernate-core.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/hibernate-entitymanager.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/hibernate-jpa-2.0-api.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/javassist.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/jboss-logging.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/jboss-transaction-api_1.1_spec.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/json-smart.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/log4j.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/mail.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/slf4j-api.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/slf4j-log4j12.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-aop.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-asm.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-beans.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-context-support.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-context.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-core.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-expression.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-jdbc.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-orm.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-security-acl.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-security-config.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-security-core.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-security-crypto.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-security-taglibs.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-security-web.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-tx.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-web.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-webmvc.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/h2.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/javax.servlet-api.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/asm-all.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/cglib-nodep.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/net-minidev-asm.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/jsoup.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/commons-collections.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/commons-lang.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/velocity.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/joda-time.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/hamcrest-core.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/junit.jar"/>
-	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-test.jar"/>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/activation.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/antlr.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/aopalliance.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/c3p0.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/commons-logging.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/dom4j.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/hibernate-c3p0.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/hibernate-commons-annotations.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/hibernate-core.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/hibernate-entitymanager.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/hibernate-jpa-2.0-api.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/javassist.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/jboss-logging.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/jboss-transaction-api_1.1_spec.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/json-smart.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/log4j.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/mail.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/slf4j-api.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/slf4j-log4j12.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-aop.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-asm.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-beans.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-context-support.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-context.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-core.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-expression.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-jdbc.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-orm.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-security-acl.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-security-config.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-security-core.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-security-crypto.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-security-taglibs.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-security-web.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-tx.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-web.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-webmvc.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/h2.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/javax.servlet-api.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/asm-all.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/cglib-nodep.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/net-minidev-asm.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/jsoup.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/commons-collections.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/commons-lang.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/velocity.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/joda-time.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/hamcrest-core.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/junit.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/jresponder-deps/lib/spring-test.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.nondependency" value=""/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
