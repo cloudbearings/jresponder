@@ -75,7 +75,8 @@ Most of the JResponder code was written and initially tested in Eclipse. Here's 
 * Follow the first two steps above - this is important as it downloads the jar files you need.  Otherwise Eclipse ain't gonna be able to do nothi'n.
 * Import each of these three Eclipse projects: jresponder-deps, jresponder, jresponder-web
 * You might need to right click -> refresh (or F5) on each of those for it show all files changes.
-* Now you can build and run the webapp using the normal Eclipse Tomcat deployment steps.  (You know - show servers, create a server if not done already, add/remove the web project to it, and press the little play button)
+* Now you can build and run the webapp using the normal Eclipse Tomcat deployment steps.  (You know - show servers, create a server if not done already, add/remove the web project to it, and press the little play button)  This normally gives you something you can hit at: http://localhost:8080/jresponder-web/
+* The default config expects a MySQL server running on localhost with database, user and password each named "jresponder". The app will generate the database schema automatically using the Hibernate "create" autoddl option.  This is obviously just a default development setup.
 
 # Roadmap
 
