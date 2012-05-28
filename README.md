@@ -24,7 +24,7 @@ A standalone download bundles this project with Apache Tomcat, to make a version
 
 # Getting Started
 
-If you just want to download JResponder to try it out, I suggest jresponder-standalone.tar.gz - which you can get from here: http://github.com/jresponder/jresponder-downloads
+If you just want to download JResponder to try it out, I suggest jresponder-standalone.tar.gz - which you can get from here: http://code.google.com/p/jresponder/downloads/list
 
 Unpack that and have a look at the README file.
 

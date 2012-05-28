@@ -24,10 +24,10 @@
 
         <!-- copy stuff into place -->
 
-        <copy file="../jresponder/dist/jresponder.jar"          tofile="${dist}/jresponder.jar"/>
-        <copy file="../jresponder/dist/jresponder-javadoc.zip"  tofile="${dist}/jresponder-javadoc.zip"/>
-        <copy file="../jresponder-web/dist/jresponder-web.war"  tofile="${dist}/jresponder-web.war"/>
-        <copy file="../jresponder-standalone/dist/jresponder-standalone.tar.gz" tofile="${dist}/jresponder-standalone.tar.gz"/>
+        <copy file="../jresponder/dist/jresponder.jar"          tofile="${dist}/jresponder-${DSTAMP}${TSTAMP}.jar"/>
+        <copy file="../jresponder/dist/jresponder-javadoc.zip"  tofile="${dist}/jresponder-javadoc-${DSTAMP}${TSTAMP}.zip"/>
+        <copy file="../jresponder-web/dist/jresponder-web.war"  tofile="${dist}/jresponder-web-${DSTAMP}${TSTAMP}.war"/>
+        <copy file="../jresponder-standalone/dist/jresponder-standalone.tar.gz" tofile="${dist}/jresponder-standalone-${DSTAMP}${TSTAMP}.tar.gz"/>
 
     </target>
 
