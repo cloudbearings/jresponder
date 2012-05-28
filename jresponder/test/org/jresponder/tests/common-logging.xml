@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-3.1.xsd
+           ">
+
+    <!-- hack attack!
+         fire up log4j like this because we want to use our own config
+         file (since Eclipse doesn't have a "test source tree" concept - so
+         we don't want to just call it log4j.properties in the default pkg) -->
+	<bean id="log4jInitialization" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+	    <property name="targetClass" value="org.springframework.util.Log4jConfigurer" />
+	    <property name="targetMethod" value="initLogging" />
+	    <property name="arguments">
+	        <list>
+	            <value>test/test-log4j.properties</value>
+	        </list>
+	    </property>
+	</bean>
+
+
+</beans>

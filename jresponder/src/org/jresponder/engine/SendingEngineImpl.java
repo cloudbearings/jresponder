@@ -34,6 +34,7 @@ import org.joda.time.DateTime;
 import org.jresponder.dao.MainDao;
 import org.jresponder.domain.LogEntryType;
 import org.jresponder.domain.Subscriber;
+import org.jresponder.domain.SubscriberStatus;
 import org.jresponder.domain.Subscription;
 import org.jresponder.domain.SubscriptionStatus;
 import org.jresponder.message.MessageGroup;
@@ -196,9 +197,25 @@ public class SendingEngineImpl implements SendingEngine, BeanFactoryAware {
 		
 		// the subscription we are now processing
 		logger().debug("Got subscription with id: {}", mySubscription.getId());
-
+		
 		// look up the subscriber too
 		Subscriber mySubscriber = mySubscription.getSubscriber();
+		
+		if (mySubscriber == null) {
+			throw new RuntimeException("Data error, subscription with id " + mySubscription.getId() + " has null subscriber, should not be possible");
+		}
+		
+		// Make sure we don't send to people who are asked off
+		
+		// if status is not okay...
+		if (mySubscriber.getSubscriberStatus() != SubscriberStatus.OK) {
+			// end this subscription
+			endSubscription(mySubscription);
+			// log for posterity
+			logger().info("Was going to send to subscriber (email={}) but status is not OK, it's '{}', not sending and ending subscription.", mySubscriber.getEmail(), mySubscriber.getSubscriberStatus());
+			// bail out
+			return true;
+		}
 		
 		// 2. for this Subscription, find last message processed in
 		//    the list for that group

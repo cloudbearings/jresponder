@@ -32,7 +32,10 @@
 
     <context:annotation-config/>
     
-    <context:component-scan base-package="org.jresponder"/>
+    <context:component-scan base-package="org.jresponder.dao"/>
+    <context:component-scan base-package="org.jresponder.domain"/>
+    <context:component-scan base-package="org.jresponder.engine"/>
+    <context:component-scan base-package="org.jresponder.service"/>
     
     <task:annotation-driven/>    
 

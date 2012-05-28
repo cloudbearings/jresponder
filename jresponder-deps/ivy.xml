@@ -1,5 +1,5 @@
 <ivy-module version="2.0">
-    <info organisation="com.myspotontheweb" module="demo"/>
+    <info organisation="jresponder" module="main"/>
     <configurations>
         <conf name="jars"           description="Jars"/>
         <conf name="jarhacks"     description="Jars with naming hacks"/>
@@ -27,6 +27,7 @@
         <dependency org="org.springframework"                   name="spring-orm"               rev="3.1.+" conf="jars->default"/>
         <dependency org="org.springframework"                   name="spring-aop"               rev="3.1.+" conf="jars->default"/>
         <dependency org="org.springframework"                   name="spring-webmvc"            rev="3.1.+" conf="jars->default"/>
+        <dependency org="org.springframework"                   name="spring-test"              rev="3.1.+" conf="jars->default"/>
         <dependency org="org.springframework.security"          name="spring-security-core"     rev="3.1.+" conf="jars->default"/>
         <dependency org="org.springframework.security"          name="spring-security-config"   rev="3.1.+" conf="jars->default"/>
         <dependency org="org.springframework.security"          name="spring-security-web"      rev="3.1.+" conf="jars->default"/>
@@ -49,6 +50,8 @@
         <dependency org="joda-time"                             name="joda-time"                rev="2.+"   conf="jars->default"/>
 
         <dependency org="org.apache.velocity"                   name="velocity"                 rev="1.7"   conf="jars->default"/>
+
+        <dependency org="junit"                                 name="junit"                    rev="4.+"   conf="jars->default"/>
 
         <dependency org="javax.mail"                            name="mail"                     rev="1.+"   conf="jars->default"/> 
         <dependency org="javax.servlet"                         name="javax.servlet-api"        rev="+"     conf="jars->default"/>
