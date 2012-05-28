@@ -24,6 +24,8 @@
  */
 package org.jresponder.tests;
 
+import static org.junit.Assert.assertEquals;
+
 import javax.annotation.Resource;
 
 import org.jresponder.dao.MainDao;
@@ -59,14 +61,21 @@ public class MainDaoTest {
 
 	
 	@Test
-	public void test() {
-		
-		System.out.println(mainDao);
+	public void testGetSubscriberByEmail() {
 		
 		Subscriber mySubscriber = new Subscriber();
 		mySubscriber.setEmail("test@example.com");
 		mySubscriber.setSubscriberStatus(SubscriberStatus.OK);
 		mainDao.persist(mySubscriber);
+		
+		assertEquals(mySubscriber.getId(), mainDao.getSubscriberByEmail("test@example.com").getId());
+				
+	}
+	
+	@Test
+	public void test1() {
+
+		System.out.println(mainDao.getSubscriberByEmail("test@example.com"));
 		
 	}
 
