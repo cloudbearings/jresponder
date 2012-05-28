@@ -12,6 +12,16 @@ Samples showing how to rapidly integrate JResponder into your website (using JQu
 
 A standalone download bundles this project with Apache Tomcat, to make a version that runs "out of the box".  JResponder is also easy to customize if you're a Java developer.
 
+# Features
+
+* Standalone version makes it easy to get up and running
+* Standard .war deploy inside Java web containers
+* JSON-RPC/JSONP interface makes web site integration fast and simple (sample code included)
+* Simple file-based HTML+Velocity message format makes authoring messages fast and painless
+* Messages are fully dynamic - text and HTML content and subject line can be dynamicized easily
+* Comes with embedded database for zero config to get started testing.  Works with MySQL out of the box as well.  Setup for other databases (as supported by Hibernate) is minimal.
+* Based on modern Java frameworks and specs: Spring 3.1, JPA, Hibernate, JUnit 4 for testing
+
 # Getting Started
 
 If you just want to download JResponder to try it out, I suggest jresponder-standalone.tar.gz - which you can get from here: http://github.com/jresponder/jresponder-downloads
