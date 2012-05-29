@@ -67,6 +67,9 @@ public class SubscriberService {
 	private Logger logger() { if (l == null) l = LoggerFactory.getLogger(this.getClass()); return l; } 
 	/* ====================================================================== */
 
+	@Resource(name="jrTokenUtil")
+	private TokenUtil tokenUtil;
+	
 	@Resource(name="jrMainDao")
 	private MainDao mainDao;
 	
@@ -160,7 +163,7 @@ public class SubscriberService {
         		// create subscription
         		mySubscription = new Subscription(mySubscriber, aMessageGroupName);
         		mySubscription.setNextSendDate(new Date());
-        		mySubscription.setToken(TokenUtil.generateToken());
+        		mySubscription.setToken(tokenUtil.generateToken());
         		
         		// send opt in confirm message if applicable
         		if (myOptInConfirmMessageRef != null) {
@@ -196,7 +199,7 @@ public class SubscriberService {
     			
     			// update attributes
     			mySubscriber.setPropsMap(
-    					(Map<String,Object>)PropUtil.propMerge(mySubscriber.getPropsMap(), aSubscriberPropsMap)
+    					(Map<String,Object>)PropUtil.getInstance().propMerge(mySubscriber.getPropsMap(), aSubscriberPropsMap)
     					);
     			
     			if (logger().isDebugEnabled()) {
@@ -220,7 +223,7 @@ public class SubscriberService {
         			
         			mySubscription = new Subscription(mySubscriber, aMessageGroupName);
             		mySubscription.setNextSendDate(new Date());
-            		mySubscription.setToken(TokenUtil.generateToken());
+            		mySubscription.setToken(tokenUtil.generateToken());
 
             		// send opt in confirm message if applicable
             		if (myOptInConfirmMessageRef != null) {

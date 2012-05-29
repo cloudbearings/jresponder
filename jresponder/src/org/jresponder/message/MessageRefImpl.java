@@ -237,7 +237,7 @@ public class MessageRefImpl implements MessageRef {
 			myRenderContext.put("message", this);
 			
 			// render the whole file
-			String myRenderedFileContents = TextRenderUtil.render(fileContents, myRenderContext);
+			String myRenderedFileContents = TextRenderUtil.getInstance().render(fileContents, myRenderContext);
 			
 			// now parse again with Jsoup
 			Document myDocument = Jsoup.parse(myRenderedFileContents);
@@ -254,7 +254,7 @@ public class MessageRefImpl implements MessageRef {
 			// text body
 			Elements myJrTextBodyElements = myDocument.select("#textbody");
 			if (!myJrTextBodyElements.isEmpty()) {
-				myTextBody = TextUtil.getWholeText(myJrTextBodyElements.first());
+				myTextBody = TextUtil.getInstance().getWholeText(myJrTextBodyElements.first());
 			}
 			
 			// now build the actual message
@@ -267,7 +267,7 @@ public class MessageRefImpl implements MessageRef {
 			// subject
 			myMimeMessageHelper.setSubject
 								(
-									TextRenderUtil.render
+									TextRenderUtil.getInstance().render
 									(
 										(String)propMap.get(MessageRefProp.JR_SUBJECT.toString()),
 										myRenderContext
@@ -277,7 +277,7 @@ public class MessageRefImpl implements MessageRef {
 			// TODO: implement DKIM, figure out subetha
 			
 			String mySenderEmailPattern = aSendConfig.getSenderEmailPattern();
-			String mySenderEmail = TextRenderUtil.render(mySenderEmailPattern, myRenderContext);
+			String mySenderEmail = TextRenderUtil.getInstance().render(mySenderEmailPattern, myRenderContext);
 			myMimeMessage.setSender(new InternetAddress(mySenderEmail));
 			
 			myMimeMessageHelper.setTo(aSubscriber.getEmail());
@@ -285,12 +285,12 @@ public class MessageRefImpl implements MessageRef {
 			// from
 			myMimeMessageHelper.setFrom
 								(
-									TextRenderUtil.render
+									TextRenderUtil.getInstance().render
 									(
 										(String)propMap.get(MessageRefProp.JR_FROM_EMAIL.toString()),
 										myRenderContext
 									),
-									TextRenderUtil.render
+									TextRenderUtil.getInstance().render
 									(
 										(String)propMap.get(MessageRefProp.JR_FROM_NAME.toString()),
 										myRenderContext

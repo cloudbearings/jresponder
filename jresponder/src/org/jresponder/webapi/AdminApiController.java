@@ -66,6 +66,9 @@ public class AdminApiController {
 	
 	@Resource(name="jrSendConfigGroup")
 	private SendConfigGroup sendConfigGroup;
+	
+	@Resource(name="jrWebApiUtil")
+	private WebApiUtil webApiUtil;
 
 	/**
 	 * REST-style call to preview a message in the context of a particular
@@ -89,7 +92,7 @@ public class AdminApiController {
 
     	Subscriber mySubscriber = subscriberService.lookupSubscriber(aEmail);
     	
-    	if (mySubscriber == null) return WebApiUtil.result404("Couldn't find subscriber");
+    	if (mySubscriber == null) return webApiUtil.result404("Couldn't find subscriber");
     	
     	Subscription mySubscription = null;
     	for (Subscription myTempSubscription: mySubscriber.getSubscriptions()) {
@@ -98,11 +101,11 @@ public class AdminApiController {
     		}
     	}
     	
-    	if (mySubscription == null) return WebApiUtil.result404("Couldn't find subscription");
+    	if (mySubscription == null) return webApiUtil.result404("Couldn't find subscription");
     	
     	MessageGroup myMessageGroup = messageGroupSource.getMessageGroupByName(aMessageGroupName);
     	
-    	if (myMessageGroup == null) return WebApiUtil.result404("Couldn't find message group");
+    	if (myMessageGroup == null) return webApiUtil.result404("Couldn't find message group");
     	
     	MessageRef myMessageRef = myMessageGroup.getMessageRefByName(aMessageName);
     	
@@ -120,7 +123,7 @@ public class AdminApiController {
     	ByteArrayOutputStream myByteArrayOutputStream =  new ByteArrayOutputStream();
     	myMimeMessage.writeTo(myByteArrayOutputStream);
     	
-    	return WebApiUtil.plainTextResult(myByteArrayOutputStream.toString("UTF-8"));
+    	return webApiUtil.plainTextResult(myByteArrayOutputStream.toString("UTF-8"));
     	
     }
 

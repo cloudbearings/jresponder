@@ -29,6 +29,8 @@ import java.util.List;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Component;
 
 /**
  * Text-related utilities 
@@ -36,13 +38,22 @@ import org.jsoup.nodes.TextNode;
  * @author bradpeabody
  *
  */
-public class TextUtil {
+@Component("jrTextUtil")
+public class TextUtil implements InitializingBean {
 	
+	/* ====================================================================== */
+	/* singleton support with override - boiler plate (see package desc)      */
+	private static TextUtil instance;
+	public static TextUtil getInstance() { return instance; }
+	public static void setInstance(TextUtil inst) { instance = inst; }
+	public void afterPropertiesSet() { setInstance(this); }
+	/* ====================================================================== */
+
 	/**
 	 * @param cell element that contains whitespace formatting
 	 * @return
 	 */
-	public static String getWholeText(Element cell) {
+	public String getWholeText(Element cell) {
 	    String text = null;
 	    List<Node> childNodes = cell.childNodes();
 	    if (childNodes.size() > 0) {

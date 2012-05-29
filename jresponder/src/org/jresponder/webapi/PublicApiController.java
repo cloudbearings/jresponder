@@ -30,8 +30,8 @@ import javax.annotation.Resource;
 
 import org.jresponder.domain.Subscriber;
 import org.jresponder.service.SubscriberService;
-import org.jresponder.util.WebApiUtil;
 import org.jresponder.util.PropUtil;
+import org.jresponder.util.WebApiUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,6 +47,9 @@ public class PublicApiController {
 	
 	@Resource(name="jrSubscriberService")
 	private SubscriberService subscriberService;
+	
+	@Resource(name="jrWebApiUtil")
+	private WebApiUtil webApiUtil;
 
 	/**
 	 * JSON-RPC call to subscribe someone
@@ -62,10 +65,11 @@ public class PublicApiController {
     public ResponseEntity<String> 	subscribe
     								(
     									@RequestParam("id") String aId,
-    									@RequestParam("params") String aParams
+    									@RequestParam("params") String aParams,
+    									@RequestParam(value="callback", required=false) String aCallback
     								) {
     	
-    	Map<String,Object> myParams = WebApiUtil.paramsToMap(aParams);
+    	Map<String,Object> myParams = webApiUtil.paramsToMap(aParams);
     	
     	// FIXME: do something like JsonApiUtil.requiredString(), requiredMap()...
     	String myEmail = (String)myParams.get("email");
@@ -75,7 +79,7 @@ public class PublicApiController {
     	Subscriber mySubscriber =
     			subscriberService.subscribe(myEmail, myAttributesMap, myMessageGroupName);
     	
-    	return WebApiUtil.jsonRpcResult(aId, PropUtil.mkprops("jr_subscriber_id", mySubscriber.getId()));
+    	return webApiUtil.jsonRpcResult(aId, aCallback, PropUtil.getInstance().mkprops("jr_subscriber_id", mySubscriber.getId()));
     	
     }
 
@@ -87,16 +91,17 @@ public class PublicApiController {
     public ResponseEntity<String> 	unsubscribe
     								(
     									@RequestParam("id") String aId,
-    									@RequestParam("params") String aParams
+    									@RequestParam("params") String aParams,
+    									@RequestParam(value="callback", required=false) String aCallback
     								) {
     	
-    	Map<String,Object> myParams = WebApiUtil.paramsToMap(aParams);
+    	Map<String,Object> myParams = webApiUtil.paramsToMap(aParams);
     	
     	String myToken = (String)myParams.get("token");
     	
     	boolean mySuccess = subscriberService.unsubscribeFromToken(myToken);
     	
-    	return WebApiUtil.jsonRpcResult(aId, PropUtil.mkprops("success", mySuccess));
+    	return webApiUtil.jsonRpcResult(aId, aCallback, PropUtil.getInstance().mkprops("success", mySuccess));
     	
 	}
 	
@@ -110,16 +115,17 @@ public class PublicApiController {
     public ResponseEntity<String> 	remove
     								(
     									@RequestParam("id") String aId,
-    									@RequestParam("params") String aParams
+    									@RequestParam("params") String aParams,
+    									@RequestParam(value="callback", required=false) String aCallback
     								) {
     	
-    	Map<String,Object> myParams = WebApiUtil.paramsToMap(aParams);
+    	Map<String,Object> myParams = webApiUtil.paramsToMap(aParams);
     	
     	String myToken = (String)myParams.get("token");
     	
     	boolean mySuccess = subscriberService.removeFromToken(myToken);
     	
-    	return WebApiUtil.jsonRpcResult(aId, PropUtil.mkprops("success", mySuccess));
+    	return webApiUtil.jsonRpcResult(aId, aCallback, PropUtil.getInstance().mkprops("success", mySuccess));
     	
 	}
 	

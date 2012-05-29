@@ -152,8 +152,8 @@ public class Subscription {
 	public String getProps() { return props; }
 	public void setProps(String v) { this.props = v; }
 	@Transient
-	public Map<String,Object> getPropsMap() { return PropUtil.propsToMap(props); }
-	public void setPropsMap(Map<String,Object> v) { this.props = PropUtil.propsToString(v); }
+	public Map<String,Object> getPropsMap() { return PropUtil.getInstance().propsToMap(props); }
+	public void setPropsMap(Map<String,Object> v) { this.props = PropUtil.getInstance().propsToString(v); }
 
 	/* ====================================================================== */
 	/* Fields                                                                 */

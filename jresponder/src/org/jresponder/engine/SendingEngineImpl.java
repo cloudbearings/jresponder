@@ -97,6 +97,9 @@ public class SendingEngineImpl implements SendingEngine, BeanFactoryAware {
 	
 	@Resource(name="jrMainDao")
 	private MainDao mainDao;
+	
+	@Resource(name="jrPropUtil")
+	private PropUtil propUtil;
 
 	/** the Spring context */
 	private BeanFactory beanFactory;
@@ -342,7 +345,7 @@ public class SendingEngineImpl implements SendingEngine, BeanFactoryAware {
 								 LogEntryType.MESSAGE_SKIPPED,
 								 mySubscriber,
 								 myMessageGroup.getName(),
-								 PropUtil.mkprops(
+								 propUtil.mkprops(
 										 "message_name", mySendMessageRef.getName()
 										 )
 						);
@@ -391,7 +394,7 @@ public class SendingEngineImpl implements SendingEngine, BeanFactoryAware {
 							 LogEntryType.SUBSCRIPTION_DONE,
 							 mySubscriber,
 							 myMessageGroup.getName(),
-							 PropUtil.mkprops(
+							 propUtil.mkprops(
 									 "message_name", mySendMessageRef.getName()
 									 )
 					);
@@ -479,7 +482,7 @@ public class SendingEngineImpl implements SendingEngine, BeanFactoryAware {
 								 aLogEntryType,
 								 aSubscriber,
 								 aMessageGroup.getName(),
-								 PropUtil.mkprops(
+								 propUtil.mkprops(
 										 "message_name", aSendMessageRef.getName()
 										 )
 						);

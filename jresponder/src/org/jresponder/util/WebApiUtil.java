@@ -30,24 +30,35 @@ import java.util.Map;
 
 import net.minidev.json.JSONValue;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 
 /**
  * Utility stuff that is specific to the JSON API
  * @author bradpeabody
  *
  */
-public class WebApiUtil {
+@Component("jrWebApiUtil")
+public class WebApiUtil implements InitializingBean {
 	
+	/* ====================================================================== */
+	/* singleton support with override - boiler plate (see package desc)      */
+	private static WebApiUtil instance;
+	public static WebApiUtil getInstance() { return instance; }
+	public static void setInstance(WebApiUtil inst) { instance = inst; }
+	public void afterPropertiesSet() { setInstance(this); }
+	/* ====================================================================== */
+
 	/**
 	 * Parse the params to a map
 	 * @param aParams
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static Map<String,Object> paramsToMap(String aParams) {
+	public Map<String,Object> paramsToMap(String aParams) {
 		
 		Object ret = JSONValue.parse(aParams);
 		if (ret instanceof Map) {
@@ -63,7 +74,7 @@ public class WebApiUtil {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static List<Object> paramsToList(String aParams) {
+	public List<Object> paramsToList(String aParams) {
 		
 		Object ret = JSONValue.parse(aParams);
 		if (ret instanceof List) {
@@ -77,30 +88,49 @@ public class WebApiUtil {
 	 * Helper that converts an object to a JSON-RPC 2.0 response with a result
 	 * and returns a corresponding
 	 * ResponseEntity which can be returned directly back to Spring MVC and go
-	 * to the browser. 
+	 * to the browser.
+	 * @param aId the JSON-RPC 2.0 request id
+	 * @param aCallback if non-null means JSONP is requested with the specified
+	 *                  callback function name 
 	 * @param aObject the response object - usually a Map
 	 * @return
 	 */
-	public static ResponseEntity<String> jsonRpcResult(String aId, Object aObject) {
+	public ResponseEntity<String> jsonRpcResult(String aId, String aCallback, Object aObject) {
     	
 		Map<String,Object> ret = new HashMap<String,Object>();
 		ret.put("id", aId);
 		ret.put("result", aObject);
 		ret.put("jsonrpc", "2.0");
 		
+		String myResultString = JSONValue.toJSONString(ret);
+		
 		HttpHeaders responseHeaders = new HttpHeaders();
-		responseHeaders.set("Content-type", "application/json-rpc");
-		return new ResponseEntity<String>(JSONValue.toJSONString(ret),
+		
+		// normal JSON response
+		if (aCallback == null || aCallback.trim().length() < 1) {
+			responseHeaders.set("Content-type", "application/json-rpc");
+		}
+		// JSONP handled differently
+		else {
+			responseHeaders.set("Content-type", "application/javascript");
+			// wrap result in JSONP callback
+			myResultString = aCallback + "&&" + aCallback + "(" + myResultString + ")";
+		}
+		
+		
+		return new ResponseEntity<String>(myResultString,
 				responseHeaders, HttpStatus.CREATED);
 	}
 	
 	/**
 	 * Make a JSON-RPC 2.0 error
+	 * @param aId the JSON-RPC 2.0 request id
+	 * @param aCallback if non-null means JSONP is requested with the specified
+	 *                  callback function name 
 	 * @param aObject
-	 * @param aId
 	 * @return
 	 */
-	public static ResponseEntity<String> jsonRpcError(String aId, Long aErrorCode, String aMessage, Object aData) {
+	public ResponseEntity<String> jsonRpcError(String aId, String aCallback, Long aErrorCode, String aMessage, Object aData) {
     	
 		Map<String,Object> err = new HashMap<String,Object>();
 		err.put("code", aErrorCode);
@@ -113,35 +143,57 @@ public class WebApiUtil {
 		ret.put("id", aId);
 		ret.put("error", err);
 		ret.put("jsonrpc", "2.0");
-
+		
+		String myResultString = JSONValue.toJSONString(ret);
+		
 		HttpHeaders responseHeaders = new HttpHeaders();
-		responseHeaders.set("Content-type", "application/json-rpc");
-		return new ResponseEntity<String>(JSONValue.toJSONString(ret),
+		
+		// normal JSON response
+		if (aCallback == null || aCallback.trim().length() < 1) {
+			responseHeaders.set("Content-type", "application/json-rpc");
+		}
+		// JSONP handled differently
+		else {
+			responseHeaders.set("Content-type", "application/javascript");
+			// wrap result in JSONP callback
+			myResultString = aCallback + "&&" + aCallback + "(" + myResultString + ")";
+		}
+
+		
+		return new ResponseEntity<String>(myResultString,
 				responseHeaders, HttpStatus.CREATED);
 	}
 	/**
 	 * Like namesake but with null data.
 	 * 
-	 * @param aId
+	 * @param aId the JSON-RPC 2.0 request id
+	 * @param aCallback if non-null means JSONP is requested with the specified
+	 *                  callback function name 
 	 * @param aErrorCode
 	 * @param aMessage
 	 * @return
 	 */
-	public static ResponseEntity<String> jsonRpcError(String aId, Long aErrorCode, String aMessage) {
-		return jsonRpcError(aId, aErrorCode, aMessage, null);
+	public ResponseEntity<String> jsonRpcError(String aId, String aCallback, Long aErrorCode, String aMessage) {
+		return jsonRpcError(aId, aCallback, aErrorCode, aMessage, null);
 	}
 	
 	/**
 	 * Generic 404 result
 	 * @return
 	 */
-	public static ResponseEntity<String> result404(String aMessage) {
+	public ResponseEntity<String> result404(String aMessage) {
 		HttpHeaders responseHeaders = new HttpHeaders();
 		return new ResponseEntity<String>(aMessage != null ? aMessage : "Not found",
 				responseHeaders, HttpStatus.NOT_FOUND);
 	}
 	
-	public static ResponseEntity<String> plainTextResult(String aText) {
+	/**
+	 * Dump result as plain text
+	 * 
+	 * @param aText
+	 * @return
+	 */
+	public ResponseEntity<String> plainTextResult(String aText) {
 		HttpHeaders responseHeaders = new HttpHeaders();
 		responseHeaders.set("Content-type", "text/plain");
 		return new ResponseEntity<String>(aText,

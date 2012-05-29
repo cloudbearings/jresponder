@@ -27,13 +27,25 @@ package org.jresponder.util;
 import java.security.SecureRandom;
 import java.util.Random;
 
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Component;
+
 /**
  * Token-related utilities. 
  * 
  * @author bradpeabody
  *
  */
-public class TokenUtil {
+@Component("jrTokenUtil")
+public class TokenUtil implements InitializingBean {
+	
+	/* ====================================================================== */
+	/* singleton support with override - boiler plate (see package desc)      */
+	private static TokenUtil instance;
+	public static TokenUtil getInstance() { return instance; }
+	public static void setInstance(TokenUtil inst) { instance = inst; }
+	public void afterPropertiesSet() { setInstance(this); }
+	/* ====================================================================== */
 
 	/* ====================================================================== */
 	/* This whole token generation thingy is based off this:
@@ -48,14 +60,20 @@ public class TokenUtil {
 	private static final String alphabet = "abcdefghijklmnopqrstuvwxyz";
 	
 	/* Uhm, yeah, don't ask... (was getting "code to large - apparently
-	 * generated static init method is generated and can only contain
-	 * 64k with default JDK compiler... whatever...)
+	 * static init method is generated and can only contain
+	 * 64k with default JDK compiler... whatever...  yes, this should be
+	 * loaded from a file etc etc, haven't gotten to that yet)
 	 */
+	
     private  static  short TRIPLET_FREQUENCY[][][];
     
     static {
+    	
+    	TRIPLET_FREQUENCY = new short[26][0][0];
+    	
     	init1();
     	init2();
+    	init3();
     }
     
     private static void init1() {
@@ -810,7 +828,7 @@ public class TokenUtil {
 
    private  static  long      sigma;
    
-   static {
+   private static void init3() {
       sigma = 0L;
 
       for (int c1 = 0; c1 < 26; c1++) {
@@ -826,16 +844,16 @@ public class TokenUtil {
     * Generate random token.  Hopefully random enough...
     * @return
     */
-   public static String generateToken() {
+   public String generateToken() {
 	   int myLength = 15 + (new Random().nextInt(10));
 	   return generateToken(myLength);
    }
 
-   public static String generateToken(int aLength) {
+   public String generateToken(int aLength) {
 	   return generateTokens(1, aLength)[0];
    }
    
-   public  static String[]  generateTokens (
+   public String[]  generateTokens (
                                 int  aTokenCount,
                                 int  aTokenLength
                                )

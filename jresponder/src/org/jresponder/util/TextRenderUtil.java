@@ -32,15 +32,26 @@ import java.util.Map;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Component;
 
 /**
  * Utility stuff to render text via Velocity
  * 
  * @author bradpeabody
  */
-public class TextRenderUtil {
+@Component("jrTextRenderUtil")
+public class TextRenderUtil implements InitializingBean {
 
-	private static VelocityEngine velocityEngine = null;
+	/* ====================================================================== */
+	/* singleton support with override - boiler plate (see package desc)      */
+	private static TextRenderUtil instance;
+	public static TextRenderUtil getInstance() { return instance; }
+	public static void setInstance(TextRenderUtil inst) { instance = inst; }
+	public void afterPropertiesSet() { setInstance(this); }
+	/* ====================================================================== */
+	
+	private volatile VelocityEngine velocityEngine = null;
 	
 	/**
 	 * Render some text through Velocity
@@ -50,7 +61,7 @@ public class TextRenderUtil {
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-	public static String render(String aInput, Map aContextProps) {
+	public String render(String aInput, Map aContextProps) {
 		
 		// set up Velocity on first use
 		if (velocityEngine == null) {
@@ -87,23 +98,6 @@ public class TextRenderUtil {
 				);
 		
 		return myStringWriter.toString();
-		
-	}
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static void main(String[] args) {
-		
-		Map myMap = new HashMap();
-		myMap.put("a", 1L);
-		String s = "testing: ${a}";
-		
-		String ret = render(s, myMap);
-		
-		System.out.println(ret);
-		
-		if (!ret.equals("testing: 1")) {
-			throw new IllegalStateException("uh oh, didn't work!");
-		}
 		
 	}
 	

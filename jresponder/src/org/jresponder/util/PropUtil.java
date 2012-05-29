@@ -27,6 +27,9 @@ package org.jresponder.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Component;
+
 import net.minidev.json.JSONValue;
 
 /**
@@ -35,7 +38,16 @@ import net.minidev.json.JSONValue;
  * @author bradpeabody
  *
  */
-public class PropUtil {
+@Component("jrPropUtil")
+public class PropUtil implements InitializingBean {
+	
+	/* ====================================================================== */
+	/* singleton support with override - boiler plate (see package desc)      */
+	private static PropUtil instance;
+	public static PropUtil getInstance() { return instance; }
+	public static void setInstance(PropUtil inst) { instance = inst; }
+	public void afterPropertiesSet() { setInstance(this); }
+	/* ====================================================================== */
 
 	/**
 	 * Merge from the aFromMap to the aIntoMap (dst &lt;- src) (assembly style).
@@ -45,7 +57,7 @@ public class PropUtil {
 	 * @param aFromMap
 	 * @return Map returns aIntoMap - in case it helps you chain calls together easier
 	 */
-	public static Map<String,Object> propMerge(Map<String,Object> aIntoMap, Map<String,Object> aFromMap) {
+	public Map<String,Object> propMerge(Map<String,Object> aIntoMap, Map<String,Object> aFromMap) {
 		for (String myKey: aFromMap.keySet()) {
 			Object myValue = aFromMap.get(myKey);
 			if (myValue == null) {
@@ -65,7 +77,7 @@ public class PropUtil {
 	 * @param args
 	 * @return
 	 */
-	public static Map<String,Object> mkprops(Object...args) {
+	public Map<String,Object> mkprops(Object...args) {
 		if (args.length % 2 != 0) {
 			throw new IllegalArgumentException("mkmap must have an even number of arguments - check your code!");
 		}
@@ -86,7 +98,7 @@ public class PropUtil {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public static Map<String,Object> propsToMap(String aString) {
+	public Map<String,Object> propsToMap(String aString) {
 		if (aString == null || aString.trim().length() < 1) {
 			return null;
 		}
@@ -100,7 +112,7 @@ public class PropUtil {
 	 * @param aMap
 	 * @return
 	 */
-	public static String propsToString(Map<String,Object> aMap) {
+	public String propsToString(Map<String,Object> aMap) {
 		if (aMap == null) {
 			return null;
 		}
