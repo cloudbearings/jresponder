@@ -234,6 +234,7 @@ public class MessageRefImpl implements MessageRef {
 			Map<String,Object> myRenderContext = new HashMap<String,Object>();
 			myRenderContext.put("subscriber", aSubscriber);
 			myRenderContext.put("subscription", aSubscription);
+			myRenderContext.put("config", aSendConfig);
 			myRenderContext.put("message", this);
 			
 			// render the whole file

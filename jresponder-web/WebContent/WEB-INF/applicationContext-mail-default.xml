@@ -38,7 +38,7 @@
                          access from the messages or from custom code -->
                     <property name="additional">
                         <map>
-                            <entry key="site_url" value="http://localhost:8080/jresponder-web/sample-site/"/>
+                            <entry key="site_url" value="http://localhost:8080/jresponder-web/"/>
                             <entry key="some_additional_data" value="the_value"/>
                         </map>
                     </property>
