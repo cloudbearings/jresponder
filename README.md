@@ -78,6 +78,10 @@ Most of the JResponder code was written and initially tested in Eclipse. Here's 
 * Now you can build and run the webapp using the normal Eclipse Tomcat deployment steps.  (You know - show servers, create a server if not done already, add/remove the web project to it, and press the little play button)  This normally gives you something you can hit at: http://localhost:8080/jresponder-web/
 * The default config expects a MySQL server running on localhost with database, user and password each named "jresponder". The app will generate the database schema automatically using the Hibernate "create" autoddl option.  This is obviously just a default development setup.
 
+## Common Extension Points
+
+TODO: look at common things that people might want to tweak and make some snippets and list them out.  This might need to become it's own page/section.
+
 # Roadmap
 
 Some of the key next things to get done on JResponder are:
