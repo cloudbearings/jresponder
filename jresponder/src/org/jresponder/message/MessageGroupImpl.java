@@ -49,11 +49,17 @@ public class MessageGroupImpl implements MessageGroup, InitializingBean, BeanNam
 	private Logger logger() { if (l == null) l = LoggerFactory.getLogger(this.getClass()); return l; } 
 	/* ====================================================================== */
 	
+	private static final String OPT_IN_CONFIRM_NAME = "opt-in-confirm";
+	private static final String HTML_EXT = ".html";
+	
 	private String name;
 	private String description;
 	private List<MessageRef> messageRefList;
 	private File directory;
 	private MessageRef optInConfirmMessageRef;
+	
+	/** checksum of messageRefList so we can see if it changed */
+	private String messageRefListChecksum = "";
 	
 	@Override
 	public String getName() {
@@ -148,15 +154,18 @@ public class MessageGroupImpl implements MessageGroup, InitializingBean, BeanNam
 			throw new IllegalStateException("directory cannot be null");
 		}
 		
-		logger().debug("MessageGroupImpl refreshing with directory: "+directory.getAbsolutePath());
+		logger().debug("MessageGroupImpl - Starting refresh with directory: {}", directory.getAbsolutePath());
 
+		// update checksum so conditionalRefresh() can do it's thing
+		messageRefListChecksum = calcChecksum();
+		
 		File[] myFiles = directory.listFiles();
 		
 		messageRefList = new ArrayList<MessageRef>();
 		
 		for (File myFile: myFiles) {
 			if (myFile.isFile()) {
-				if (myFile.getName().endsWith(".html")) {
+				if (myFile.getName().endsWith(HTML_EXT)) {
 					try {
 						MessageRefImpl myMessageRefImpl;
 						myMessageRefImpl = new MessageRefImpl(myFile);
@@ -168,7 +177,7 @@ public class MessageGroupImpl implements MessageGroup, InitializingBean, BeanNam
 						myMessageRefImpl.getWaitAfterLastMessage();
 						
 						// the "opt-in-confirm" message is treated differently
-						if (myMessageRefImpl.getName().equals("opt-in-confirm")) {
+						if (myMessageRefImpl.getName().equals(OPT_IN_CONFIRM_NAME)) {
 							optInConfirmMessageRef = myMessageRefImpl;
 						}
 						else {
@@ -188,13 +197,62 @@ public class MessageGroupImpl implements MessageGroup, InitializingBean, BeanNam
 		
 	}
 
+	protected String calcChecksum() {
+		
+		StringBuilder myStringBuilder = new StringBuilder();
+		
+		File[] myFiles = directory.listFiles();
+		for (File myFile: myFiles) {
+			if (myFile.isFile()) {
+				if (myFile.getName().endsWith(HTML_EXT) && !(myFile.getName().equals(OPT_IN_CONFIRM_NAME+HTML_EXT))) {
+					myStringBuilder
+						.append(myFile.getName())
+						// don't include date, just want the message list
+						//.append("|")
+						//.append(myFile.lastModified())
+						.append("|");
+				}
+			}
+		}
+		
+		return myStringBuilder.toString();
+
+	}
+	
 	@Override
-	public void conditionalRefresh() {
-		// TODO Auto-generated method stub
-		// should scan list of files, if names and/or count is different,
-		// then reload everything, if the same, then call conditionalRefresh()
-		// on all of our MessageRefs
-		throw new UnsupportedOperationException("Not implemented yet");
+	public boolean conditionalRefresh() {
+	
+		String myChecksum = calcChecksum();
+		if (myChecksum.equals(messageRefListChecksum)) {
+			
+			try {
+				
+				boolean myChanged = false;
+				
+				// if checksum is not changed, then just call
+				// conditionalRefresh on each messageref
+				for (MessageRef myMessageRef: messageRefList) {
+						if (myMessageRef.conditionalRefresh()) {
+							myChanged = true;
+						}
+				}
+				
+				if (optInConfirmMessageRef.conditionalRefresh()) {
+					myChanged = true;
+				}
+				
+				return myChanged;
+				
+			} catch (InvalidMessageException e) {
+				throw new RuntimeException(e);
+			}
+			
+		}
+		
+		refresh();
+		
+		return true;
+		
 	}
 
 

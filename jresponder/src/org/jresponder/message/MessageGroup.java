@@ -83,7 +83,8 @@ public interface MessageGroup {
 	/**
 	 * Refresh/update if needed - avoids the work if it doesn't look like
 	 * things have changed.
+	 * @return true if it did actually refresh
 	 */
-	public void conditionalRefresh();
+	public boolean conditionalRefresh();
 	
 }

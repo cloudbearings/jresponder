@@ -28,6 +28,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 
 /**
@@ -36,9 +38,21 @@ import org.springframework.beans.factory.InitializingBean;
  *
  */
 public class MessageGroupSourceImpl implements MessageGroupSource, InitializingBean {
+	
+	/* ====================================================================== */
+	/* Logger boiler plate                                                    */
+	/* ====================================================================== */
+	private static Logger l = null;
+	private Logger logger() { if (l == null) l = LoggerFactory.getLogger(this.getClass()); return l; } 
+	/* ====================================================================== */
 
 	private List<MessageGroup> messageGroupList = null;
 	private File directory = null;
+	
+	/**
+	 * Checksum to keep track of list of message group sources changing
+	 */
+	private String messageGroupListChecksum = "";
 	
 	@Override
 	public List<MessageGroup> getMessageGroupList() {
@@ -85,10 +99,23 @@ public class MessageGroupSourceImpl implements MessageGroupSource, InitializingB
 	 */
 	@Override
 	public void afterPropertiesSet() throws Exception {
+		refresh();
+	}
+
+
+	/* (non-Javadoc)
+	 * @see org.jresponder.message.MessageGroupSource#refresh()
+	 */
+	@Override
+	public void refresh() {
 		
 		if (directory == null) throw new IllegalStateException("directory cannot be null - you must call setDirectory() before initializing");
 		
 		if (!directory.isDirectory()) throw new IllegalStateException("directory provided is not a directory: "+directory.getAbsolutePath());
+		
+		logger().debug("MessageGroupSourceImpl - Starting refresh with directory: {}", directory.getAbsolutePath());
+
+		messageGroupListChecksum = calcChecksum();
 		
 		List<File> myGroupDirList = new ArrayList<File>();
 		
@@ -110,12 +137,60 @@ public class MessageGroupSourceImpl implements MessageGroupSource, InitializingB
 			myMessageGroupImpl.setId(myGroupDir.getName());
 			myMessageGroupImpl.setDirectory(myGroupDir);
 			// initialize
-			myMessageGroupImpl.afterPropertiesSet();
+			myMessageGroupImpl.refresh();
 			// add to list
 			messageGroupList.add(myMessageGroupImpl);
 		}
 		
 		// done!
+		
+	}
+	
+	
+	protected String calcChecksum() {
+		
+		StringBuilder myStringBuilder = new StringBuilder();
+		
+		String[] mySubEntries = directory.list();
+		for (String mySubEntry: mySubEntries) {
+			File mySubDirFile = new File(directory, mySubEntry);
+			// only look at subfolders, not files
+			if (mySubDirFile.isDirectory()) {
+				myStringBuilder
+					.append(mySubDirFile.getName())
+					.append("|");
+			}
+		}
+
+		
+		return myStringBuilder.toString();
+
+	}
+
+
+	/* (non-Javadoc)
+	 * @see org.jresponder.message.MessageGroupSource#conditionalRefresh()
+	 */
+	@Override
+	public boolean conditionalRefresh() {
+		
+		if (calcChecksum().equals(messageGroupListChecksum)) {
+			
+			boolean myChanged = false;
+			
+			for (MessageGroup myMessageGroup: messageGroupList) {
+				if (myMessageGroup.conditionalRefresh()) {
+					myChanged = true;
+				}
+			}
+			
+			return myChanged;
+			
+		}
+
+		refresh();
+		
+		return true;
 	}
 
 

@@ -144,6 +144,9 @@ public class SendingEngineImpl implements SendingEngine, BeanFactoryAware {
 			long myStartTime = System.currentTimeMillis();
 			logger().debug("engineLoopIteration() - starting at {} in thread {}", myStartTime, Thread.currentThread().getName());
 			
+			// do a conditional refresh on the message stuff
+			messageGroupSource.conditionalRefresh();
+			
 			boolean myShouldContinue = true;
 			
 			while (myShouldContinue) {

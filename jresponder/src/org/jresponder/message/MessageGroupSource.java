@@ -49,4 +49,16 @@ public interface MessageGroupSource {
 	 */
 	public MessageGroup getMessageGroupByName(String aName);
 	
+	/**
+	 * Refresh/update
+	 */
+	public void refresh();
+	
+	/**
+	 * Refresh/update if needed, implementation should be very fast if no changes
+	 * @return true if it did actually refresh
+	 */
+	public boolean conditionalRefresh();
+
+	
 }

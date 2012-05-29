@@ -121,7 +121,7 @@ public class MessageRefImpl implements MessageRef {
 		
 		try {
 			
-			logger().debug("Starting refresh for: {}", file.getCanonicalPath());
+			logger().debug("MessageRef - Starting refresh for: {}", file.getCanonicalPath());
 			
 			// set timestamp
 			fileContentsTimestamp = file.lastModified();
