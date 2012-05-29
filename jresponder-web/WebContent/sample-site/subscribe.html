@@ -5,6 +5,8 @@
 <title>Subscribe to our Mailing List</title>
 <link rel="stylesheet" href="sample.css" type="text/css" />
 <script src="jquery.js"></script>
+<!-- JSON compatibility for IE < 8 -->
+<script src="json2.js"></script>
 </head>
 <body>
 
@@ -17,15 +19,83 @@
 	<em>sweet</em> sample messages.
 	</p>
 	
-	<div id="success_message">
+	<div id="success_message" class="message" style="display:none">
+	Subscription was successful!  You should receive a confirmation email
+	momentarily, please find it and click the confirm link.
 	</div>
+    <div id="error_message" class="message" style="display:none">
+    An error occurred trying to process your subscription request.  Please
+    ensure the email you entered is valid and try again.
+    </div>
 	
-	<div>Email:</div>
-	<div>First Name:</div>
-	<div><input type="button" id="subscribe_button" value="Subscribe"/></div>
+	<table class="signup-table">
+	   <tr><td class="label">Email:</td><td><input type="text" id="email" value=""/></td></tr>
+       <tr><td class="label">First Name:</td><td><input type="text" id="first_name" value=""/></td></tr>
+       <tr><td>&nbsp;</td><td><input type="button" id="subscribe_button" value="Subscribe"/></td></tr>
+	</table>
 	
 </div> 
 
+<script>
+	
+$(document).ready(function() {
+	
+	$('.message').css({display:'block'}).hide();
+	
+	$('#subscribe_button').click(function(e) {
+		
+		// basic JSON-RPC 2 query string setup
+		var q = { jsonrpc: "2.0", method: "subscribe", id: Math.floor(Math.random()*2147483647) };
+		
+		// parameters
+		q.params = JSON.stringify({
+			
+			// email address
+			email: $('#email').val(),
+			
+			// which message group (list) - list1 is a default, you can make your own
+			message_group_name: 'list1',
+			
+			// arbitrary additional data goes here
+			props: {
+				first_name: $('#first_name').val()
+			}
+		});
+		
+		// make the subscribe call
+		$.getJSON("../public/api.action?callback=?", q, function (data) {
+			
+			// handle the result
+
+			// if we have data.result, success!
+			if (data.result) {
+				
+				// show message to user
+				$('.message').hide();
+				$('#success_message').show(300);
+				
+			}
+			
+            // otherwise it's an error
+			else {
+				
+				// data.error gives the info on what happened, but it's
+				// usually workable to just kick it back to the user
+				// with a simple message
+				
+				// show error message to user
+                $('.message').hide();
+                $('#error_message').show(300);
+				
+			}
+			
+		});
+		
+	});
+	
+});
+
+</script>
 
 </body>
 </html>
