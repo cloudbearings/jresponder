@@ -30,6 +30,7 @@ import java.util.Map;
 
 import net.minidev.json.JSONValue;
 
+import org.jresponder.service.ServiceException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -52,37 +53,38 @@ public class WebApiUtil implements InitializingBean {
 	public void afterPropertiesSet() { setInstance(this); }
 	/* ====================================================================== */
 
-	/**
-	 * Parse the params to a map
-	 * @param aParams
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public Map<String,Object> paramsToMap(String aParams) {
-		
-		Object ret = JSONValue.parse(aParams);
-		if (ret instanceof Map) {
-			return ((Map<String,Object>)ret);
-		}
-		
-		throw new IllegalArgumentException("Unable to parse parameters or wrong type - expected object/map");
-	}
 	
-	/**
-	 * Parse the params to a list
-	 * @param aParams
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public List<Object> paramsToList(String aParams) {
-		
-		Object ret = JSONValue.parse(aParams);
-		if (ret instanceof List) {
-			return ((List<Object>)ret);
-		}
-		
-		throw new IllegalArgumentException("Unable to parse parameters or wrong type - expected array/list");
-	}
+//	/**
+//	 * Parse the params to a map
+//	 * @param aParams
+//	 * @return
+//	 */
+//	@SuppressWarnings("unchecked")
+//	public Map<String,Object> paramsToMap(String aParams) {
+//		
+//		Object ret = JSONValue.parse(aParams);
+//		if (ret instanceof Map) {
+//			return ((Map<String,Object>)ret);
+//		}
+//		
+//		throw new IllegalArgumentException("Unable to parse parameters or wrong type - expected object/map");
+//	}
+//	
+//	/**
+//	 * Parse the params to a list
+//	 * @param aParams
+//	 * @return
+//	 */
+//	@SuppressWarnings("unchecked")
+//	public List<Object> paramsToList(String aParams) {
+//		
+//		Object ret = JSONValue.parse(aParams);
+//		if (ret instanceof List) {
+//			return ((List<Object>)ret);
+//		}
+//		
+//		throw new IllegalArgumentException("Unable to parse parameters or wrong type - expected array/list");
+//	}
 
 	/**
 	 * Helper that converts an object to a JSON-RPC 2.0 response with a result
@@ -123,21 +125,15 @@ public class WebApiUtil implements InitializingBean {
 	}
 	
 	/**
-	 * Make a JSON-RPC 2.0 error
-	 * @param aId the JSON-RPC 2.0 request id
-	 * @param aCallback if non-null means JSONP is requested with the specified
-	 *                  callback function name 
-	 * @param aObject
+	 * Make a JSON-RPC 2.0 error from a {@link ServiceException}.
 	 * @return
 	 */
-	public ResponseEntity<String> jsonRpcError(String aId, String aCallback, Long aErrorCode, String aMessage, Object aData) {
+	public ResponseEntity<String> jsonRpcError(String aId, String aCallback, ServiceException e) {
     	
 		Map<String,Object> err = new HashMap<String,Object>();
-		err.put("code", aErrorCode);
-		err.put("message", aMessage);
-		if (aData != null) {
-			err.put("data", aData);
-		}
+		err.put("code", e.getServiceExceptionType().getCode());
+		err.put("message", e.toString());
+		err.put("data", e.getDataMap());
 		
 		Map<String,Object> ret = new HashMap<String,Object>();
 		ret.put("id", aId);
@@ -163,19 +159,62 @@ public class WebApiUtil implements InitializingBean {
 		return new ResponseEntity<String>(myResultString,
 				responseHeaders, HttpStatus.CREATED);
 	}
-	/**
-	 * Like namesake but with null data.
-	 * 
-	 * @param aId the JSON-RPC 2.0 request id
-	 * @param aCallback if non-null means JSONP is requested with the specified
-	 *                  callback function name 
-	 * @param aErrorCode
-	 * @param aMessage
-	 * @return
-	 */
-	public ResponseEntity<String> jsonRpcError(String aId, String aCallback, Long aErrorCode, String aMessage) {
-		return jsonRpcError(aId, aCallback, aErrorCode, aMessage, null);
-	}
+	
+//	/**
+//	 * Make a JSON-RPC 2.0 error
+//	 * @param aId the JSON-RPC 2.0 request id
+//	 * @param aCallback if non-null means JSONP is requested with the specified
+//	 *                  callback function name 
+//	 * @param aObject
+//	 * @return
+//	 */
+//	public ResponseEntity<String> jsonRpcError(String aId, String aCallback, Long aErrorCode, String aMessage, Object aData) {
+//    	
+//		Map<String,Object> err = new HashMap<String,Object>();
+//		err.put("code", aErrorCode);
+//		err.put("message", aMessage);
+//		if (aData != null) {
+//			err.put("data", aData);
+//		}
+//		
+//		Map<String,Object> ret = new HashMap<String,Object>();
+//		ret.put("id", aId);
+//		ret.put("error", err);
+//		ret.put("jsonrpc", "2.0");
+//		
+//		String myResultString = JSONValue.toJSONString(ret);
+//		
+//		HttpHeaders responseHeaders = new HttpHeaders();
+//		
+//		// normal JSON response
+//		if (aCallback == null || aCallback.trim().length() < 1) {
+//			responseHeaders.set("Content-type", "application/json-rpc");
+//		}
+//		// JSONP handled differently
+//		else {
+//			responseHeaders.set("Content-type", "application/javascript");
+//			// wrap result in JSONP callback
+//			myResultString = aCallback + "&&" + aCallback + "(" + myResultString + ")";
+//		}
+//
+//		
+//		return new ResponseEntity<String>(myResultString,
+//				responseHeaders, HttpStatus.CREATED);
+//	}
+	
+//	/**
+//	 * Like namesake but with null data.
+//	 * 
+//	 * @param aId the JSON-RPC 2.0 request id
+//	 * @param aCallback if non-null means JSONP is requested with the specified
+//	 *                  callback function name 
+//	 * @param aErrorCode
+//	 * @param aMessage
+//	 * @return
+//	 */
+//	public ResponseEntity<String> jsonRpcError(String aId, String aCallback, Long aErrorCode, String aMessage) {
+//		return jsonRpcError(aId, aCallback, aErrorCode, aMessage, null);
+//	}
 	
 	/**
 	 * Generic 404 result

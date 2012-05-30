@@ -29,7 +29,9 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.jresponder.domain.Subscriber;
+import org.jresponder.service.ServiceException;
 import org.jresponder.service.SubscriberService;
+import org.jresponder.util.JsonParamsHolder;
 import org.jresponder.util.PropUtil;
 import org.jresponder.util.WebApiUtil;
 import org.springframework.http.ResponseEntity;
@@ -60,7 +62,6 @@ public class PublicApiController {
 	 * @param aParams
 	 * @return
 	 */
-    @SuppressWarnings("unchecked")
 	@RequestMapping(params={"method=subscribe","jsonrpc=2.0"})
     public ResponseEntity<String> 	subscribe
     								(
@@ -69,18 +70,23 @@ public class PublicApiController {
     									@RequestParam(value="callback", required=false) String aCallback
     								) {
     	
-    	Map<String,Object> myParams = webApiUtil.paramsToMap(aParams);
-    	
-    	// FIXME: do something like JsonApiUtil.requiredString(), requiredMap()...
-    	String myEmail = (String)myParams.get("email");
-    	Map<String,Object> myAttributesMap = (Map<String,Object>)myParams.get("props");
-    	String myMessageGroupName = (String)myParams.get("message_group_name");
-    	
-    	Subscriber mySubscriber =
-    			subscriberService.subscribe(myEmail, myAttributesMap, myMessageGroupName);
-    	
-    	return webApiUtil.jsonRpcResult(aId, aCallback, PropUtil.getInstance().mkprops("jr_subscriber_id", mySubscriber.getId()));
-    	
+    	try {
+    		
+    		JsonParamsHolder p = new JsonParamsHolder(aParams);
+
+	    	String myEmail = p.getString("email");
+	    	Map<String,Object> myAttributesMap = p.getProps("props", null);
+	    	String myMessageGroupName = p.getString("message_group_name");
+	    	
+	    	Subscriber mySubscriber =
+	    			subscriberService.subscribe(myEmail, myAttributesMap, myMessageGroupName);
+	    	
+	    	return webApiUtil.jsonRpcResult(aId, aCallback, PropUtil.getInstance().mkprops("jr_subscriber_id", mySubscriber.getId()));
+    	}
+    	catch (ServiceException e) {
+    		return webApiUtil.jsonRpcError(aId, aCallback, e);
+    	}
+
     }
 
     /**
@@ -95,14 +101,20 @@ public class PublicApiController {
     									@RequestParam(value="callback", required=false) String aCallback
     								) {
     	
-    	Map<String,Object> myParams = webApiUtil.paramsToMap(aParams);
+    	try {
+    		
+    		JsonParamsHolder p = new JsonParamsHolder(aParams);
     	
-    	String myToken = (String)myParams.get("token");
+	    	String myToken = p.getString("token");
     	
-    	boolean mySuccess = subscriberService.unsubscribeFromToken(myToken);
-    	
-    	return webApiUtil.jsonRpcResult(aId, aCallback, PropUtil.getInstance().mkprops("success", mySuccess));
-    	
+	    	subscriberService.unsubscribeFromToken(myToken);
+	    	
+	    	return webApiUtil.jsonRpcResult(aId, aCallback, PropUtil.getInstance().mkprops("success", true));
+    	}
+    	catch (ServiceException e) {
+    		return webApiUtil.jsonRpcError(aId, aCallback, e);
+    	}
+
 	}
 	
     /**
@@ -118,14 +130,46 @@ public class PublicApiController {
     									@RequestParam("params") String aParams,
     									@RequestParam(value="callback", required=false) String aCallback
     								) {
+    	try {
+    		
+    		JsonParamsHolder p = new JsonParamsHolder(aParams);
     	
-    	Map<String,Object> myParams = webApiUtil.paramsToMap(aParams);
+	    	String myToken = p.getString("token");
+	    	
+	    	subscriberService.removeFromToken(myToken);
+	    	
+	    	return webApiUtil.jsonRpcResult(aId, aCallback, PropUtil.getInstance().mkprops("success", true));
+    	}
+    	catch (ServiceException e) {
+    		return webApiUtil.jsonRpcError(aId, aCallback, e);
+    	}
+
+	}
+	
+    /**
+     * Confirm someone (as in opt-in-confirm).
+     */
+	@RequestMapping(params={"method=confirm","jsonrpc=2.0"})
+    public ResponseEntity<String> 	confirm
+    								(
+    									@RequestParam("id") String aId,
+    									@RequestParam("params") String aParams,
+    									@RequestParam(value="callback", required=false) String aCallback
+    								) {
     	
-    	String myToken = (String)myParams.get("token");
+    	try {
+    		
+    		JsonParamsHolder p = new JsonParamsHolder(aParams);
     	
-    	boolean mySuccess = subscriberService.removeFromToken(myToken);
+    		String myToken = p.getString("token");
+    		
+    		subscriberService.confirmFromToken(myToken);
     	
-    	return webApiUtil.jsonRpcResult(aId, aCallback, PropUtil.getInstance().mkprops("success", mySuccess));
+    		return webApiUtil.jsonRpcResult(aId, aCallback, PropUtil.getInstance().mkprops("success", true));
+    	}
+    	catch (ServiceException e) {
+    		return webApiUtil.jsonRpcError(aId, aCallback, e);
+    	}
     	
 	}
 	

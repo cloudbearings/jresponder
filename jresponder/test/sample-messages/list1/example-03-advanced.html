@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta name="JR_SUBJECT"                    content="Hey! Check out this cool stuff #3"/>
+    <meta name="JR_FROM_EMAIL"                 content="joe@example.com"/>
+    <meta name="JR_FROM_NAME"                  content="Joe Doe"/>
+    <meta name="JR_PER_MSG_DATA_URL"           content="http://some-local-server/get-data.php?id=${id}"/>
+    <!-- wait one minute -->
+    <meta name="JR_WAIT_AFTER_LAST_MESSAGE"    content="PT1M"/>
+ 
+    <title>This title is not used</title>
+    
+</head>
+<body>
+
+<div id="htmlbody">
+
+    <p>
+    Dear ${firstName},
+    </p>
+    
+    <p>
+    This is a test.
+    </p>
+    <p>Hello</p>
+    
+    <p>
+    Best, John
+    </p>
+    
+</div>
+
+<div id="textbody" style="display:none"><![CDATA[
+Dear ${firstName},
+
+This is a test.
+
+Best, John
+]]></div>
+
+</body>
+</html>

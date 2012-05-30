@@ -22,7 +22,7 @@
  *
  * =========================================================================
  */
-package org.jresponder.tests;
+package org.jresponder;
 
 import static org.junit.Assert.assertEquals;
 

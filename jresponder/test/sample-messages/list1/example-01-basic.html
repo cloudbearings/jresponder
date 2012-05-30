@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+                <!-- ======================================================= -->
+                <!-- This is a basic example of a JResponder message.        -->
+                <!-- ======================================================= -->
+<html>
+<head>
+
+                <!-- ======================================================= -->
+                <!-- Message settings                                        -->
+                <!-- ======================================================= -->
+    <meta name="JR_SUBJECT"                    content="Hey! Check out this cool stuff"/>
+    <meta name="JR_FROM_EMAIL"                 content="joe@example.com"/>
+    <meta name="JR_FROM_NAME"                  content="Joe Doe"/>
+                <!-- ======================================================= -->
+                <!-- wait 30 seconds after last message (or after initial    -->
+                <!-- subscription if first one)                              -->
+                <!-- ======================================================= -->
+    <meta name="JR_WAIT_AFTER_LAST_MESSAGE"    content="PT30S"/>
+    
+</head>
+<body>
+
+                <!-- ======================================================= -->
+                <!-- HTML message body                                       -->
+                <!-- ======================================================= -->
+<div id="htmlbody">
+
+    <div style="width: 600px; margin: 20px; padding: 20px; border: 1px solid #999; border-radius: 5px; background: #eee">
+    
+                <!-- ======================================================= -->
+                <!-- You can use Velocity markup to make things dynamic      -->
+                <!-- ======================================================= -->
+	    #if ($!{subscriber.propsMap.first_name})
+                <!-- ======================================================= -->
+                <!-- For example, $!{subscriber.first_name} outputs the      -->
+                <!-- "first_name" property on the subscriber (which is       -->
+                <!-- arbitrary - you can set whatever properties you want    -->
+                <!-- when the guy subscribes.                                -->
+                <!-- ======================================================= -->
+	    <p>Dear $!{subscriber.propsMap.first_name},</p>
+	    #end
+	    
+        <p>This is an example message.</p>
+        
+        <p>Hopefully you like it.</p>
+	    
+	    <p>Best, John</p>
+	    
+    </div>
+    
+</div>
+
+                <!-- ======================================================= -->
+                <!-- Plain text message body                                 -->
+                <!-- ======================================================= -->
+<div id="textbody" style="display:none"><![CDATA[
+Dear ${firstName},
+
+This is a test.
+
+Best, John
+]]></div>
+
+                <!-- ======================================================= -->
+                <!-- That's it!                                              -->
+                <!-- ======================================================= -->
+
+</body>
+</html>

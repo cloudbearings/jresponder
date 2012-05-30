@@ -53,6 +53,11 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
  * Perform actions related to subscribing.
+ * <p>
+ * TODO: we should look at how return codes are dealt with - should probably
+ * make it so a certain type of exception is thrown on error, and that 
+ * exception has a standard list of error types - which can correspond
+ * directly to the error codes sent back via JSON-RPC 2. 
  * 
  * @author bradpeabody
  *
@@ -70,6 +75,9 @@ public class SubscriberService {
 	@Resource(name="jrTokenUtil")
 	private TokenUtil tokenUtil;
 	
+	@Resource(name="jrPropUtil")
+	private PropUtil propUtil;
+	
 	@Resource(name="jrMainDao")
 	private MainDao mainDao;
 	
@@ -86,13 +94,20 @@ public class SubscriberService {
 	 */
 	private static Map<String,Object> defaultLogEntryProps() {
 		
-		// use some Spring magic to get the current request
-		HttpServletRequest req = 
-				((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
-				.getRequest();
 		
 		Map<String,Object> myRet = new HashMap<String,Object>();
-		myRet.put("ip_address", req.getRemoteAddr());
+		
+		try {
+			// use some Spring magic to get the current request
+			HttpServletRequest req = 
+					((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+					.getRequest();
+			myRet.put("ip_address", req.getRemoteAddr());
+		}
+		catch (IllegalStateException e) {
+			LoggerFactory.getLogger(SubscriberService.class).debug("defaultLogEntryProps() got IllegalStateException - this is normal if testing outside of web env");
+		}
+		
 		return myRet;
 	}
 	
@@ -360,6 +375,59 @@ public class SubscriberService {
 
 	}
 	
+	/**
+	 * Performs an opt-in confirmation from a token.
+	 * 
+	 * @param aToken
+	 * @return true if found and confirmed, false if not found or could
+	 *         not confirm due to subscriber or subscription being in
+	 *         funky state.
+	 */
+	@Transactional(propagation=Propagation.REQUIRED)
+	public void confirmFromToken(String aToken) throws ServiceException {
+		
+		Subscription mySubscription = mainDao.getSubscriptionByToken(aToken);
+		if (mySubscription == null) {
+			throw new ServiceException(ServiceExceptionType.NO_SUCH_SUBSCRIPTION,
+					propUtil.mkprops("token", aToken));
+		}
+		
+		Subscriber mySubscriber = mySubscription.getSubscriber();
+		if (mySubscriber == null) {
+			throw new ServiceException(ServiceExceptionType.NO_SUCH_SUBSCRIBER,
+					propUtil.mkprops("token", aToken, "jr_subscription_id", mySubscription.getId()));
+		}
+		
+		logger().debug("Attempting to confirm subscription (token={}) for subscriber (email={})",
+				new Object[] { mySubscription.getToken(), mySubscriber.getEmail() });
+		
+		// make sure subscriber is marked as OK
+		if (mySubscriber.getSubscriberStatus() != SubscriberStatus.OK) {
+			logger().debug("Could not confirm, subscriber status was not OK, instead it was: {}", mySubscriber.getSubscriberStatus() );
+			throw new ServiceException(ServiceExceptionType.SUBSCRIBER_NOT_OK,
+					propUtil.mkprops("token", aToken));
+		}
+		
+		// make sure subscription is marked as confirm wait or is already active
+		if (!
+				(
+						mySubscription.getSubscriptionStatus() == SubscriptionStatus.CONFIRM_WAIT ||
+						mySubscription.getSubscriptionStatus() == SubscriptionStatus.ACTIVE
+				)
+			) {
+			logger().debug("Could not confirm, subscription status was not CONFIRM_WAIT or ACTIVE, instead it was: {}", mySubscription.getSubscriptionStatus() );
+			throw new ServiceException(ServiceExceptionType.UNEXPECTED_SUBSCRIPTION_STATUS,
+					propUtil.mkprops("token", aToken));
+		}
+		
+		mySubscription.setSubscriptionStatus(SubscriptionStatus.ACTIVE);
+		mainDao.persist(mySubscription);
+		
+		logger().info("Subscription (email={},message_group_name={},token={}) was confirmed!",
+				new Object[] { mySubscriber.getEmail(), mySubscription.getMessageGroupName(), mySubscription.getToken() });
+
+	}
+
 	/**
 	 * Send an opt-in confirmation message
 	 * 

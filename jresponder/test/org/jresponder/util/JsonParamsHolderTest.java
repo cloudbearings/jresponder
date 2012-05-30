@@ -22,18 +22,40 @@
  *
  * =========================================================================
  */
-package org.jresponder.tests;
+package org.jresponder.util;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+import org.jresponder.service.ServiceException;
+import org.jresponder.service.ServiceExceptionType;
+import org.junit.Test;
 
 /**
+ * Unit test for JsonParamsHolder
  * @author bradpeabody
  *
  */
-@RunWith(Suite.class)
-@SuiteClasses({MainDaoTest.class})
-public class AllTests {
+public class JsonParamsHolderTest {
+
+	@Test
+	public void testStrings() throws Exception {
+		
+		new PropUtil().afterPropertiesSet();
+		
+		JsonParamsHolder h = new JsonParamsHolder("{\"test\":\"blah\"}");
+		assertEquals("blah", h.getString("test"));
+		
+		h = new JsonParamsHolder("{\"test\":\"blah\"}");
+		try {
+			h.getString("this_doesnt_exist");
+			fail("should have thrown exception here");
+		}
+		catch (ServiceException e) {
+			assertEquals(ServiceExceptionType.PARAM_REQUIRED, e.getServiceExceptionType());
+		}
+		
+		
+	}
 
 }
