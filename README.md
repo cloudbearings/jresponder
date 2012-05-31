@@ -87,10 +87,12 @@ TODO: look at common things that people might want to tweak and make some snippe
 Some of the key next things to get done on JResponder are:
 
 * Complete the sample pages for subscription/unsubscription, make it work cross domain with JSONP
-* Unit/regression tests
+* Enable velocity macro support for common items used across messages and lists
 * Test message sending
+* Unit/regression tests
 * Better/any administrative interface
 * DKIM support
+* Opt-out message for when someone unsubscribes
 * Embedded mail server - for bounces and "re: unsubscribe" handling
 # Review the sending engine and see how we can make it more efficient (probably just having a configurable number of threads would work as immediate boost)
 * Mail server configuration/integration docs
