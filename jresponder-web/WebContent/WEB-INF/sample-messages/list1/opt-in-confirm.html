@@ -33,12 +33,12 @@
         this is the case.</p>
         
         <p>
-            <a  href="${config.additional.site_url}public/api/confirm.action?code=${subscription.token}">
+            <a  href="${config.additional.site_url}sample-site/confirm.html?token=${subscription.token}">
                 Yes, dude, I'm sure I want your emails (unless/until I unsubscribe).
             </a>
         </p>
         
-        <p>Best, John</p>
+        <p>Best, Joe</p>
         
     </div>
     
@@ -48,11 +48,17 @@
                 <!-- Plain text message body                                 -->
                 <!-- ======================================================= -->
 <div id="textbody" style="display:none"><![CDATA[
-Dear ${firstName},
+#if ($!{subscriber.propsMap.first_name})
+Dear $!{subscriber.propsMap.first_name},
+#end
 
-This is a test.
+Thanks for signing up!  In order for us to send you the cool emails
+we said we would, we need you to click the link below to confirm that
+this is the case.
 
-Best, John
+${config.additional.site_url}sample-site/confirm.html?token=${subscription.token}
+
+Best, Joe
 ]]></div>
 
                 <!-- ======================================================= -->

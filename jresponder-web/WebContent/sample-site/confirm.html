@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Confirm Your Subscription</title>
+<link rel="stylesheet" href="sample.css" type="text/css" />
+<script src="jquery.js"></script>
+<!-- JSON compatibility for IE < 8 -->
+<script src="json2.js"></script>
+</head>
+<body>
+
+<div id="banner"></div>
+
+<div id="main">
+
+	<p>
+	Thank you, your subscription is being confirmed...
+	</p>
+	
+	<div id="success_message" class="message" style="display:none">
+	<p>Confirmation was successful!
+	<p>If you wish to undo your subscription later, a link is
+	provided at the bottom of any email we send you. 
+	</div>
+    <div id="error_message" class="message" style="display:none">
+    An error occurred trying to process your confirmation request.
+    </div>
+	
+</div> 
+
+<script>
+	
+$(document).ready(function() {
+	
+	$('.message').css({display:'block'}).hide();
+	
+		
+	// basic JSON-RPC 2 query string setup
+	var q = { jsonrpc: "2.0", method: "confirm", id: Math.floor(Math.random()*2147483647) };
+	
+	// parameters
+	q.params = JSON.stringify({
+		
+		// token, extract from url
+		token: window.location.search.replace(/.*token=([a-z]+).*/,'$1')
+		
+	});
+	
+	// make the subscribe call
+	$.getJSON("../public/api.action?callback=?", q, function (data) {
+		
+		// handle the result
+
+		// if we have data.result, success!
+		if (data.result) {
+			
+			// show message to user
+			$('.message').hide();
+			$('#success_message').show(300);
+			
+		}
+		
+           // otherwise it's an error
+		else {
+			
+			// data.error gives the info on what happened, but it's
+			// usually workable to just kick it back to the user
+			// with a simple message
+			
+			// show error message to user
+               $('.message').hide();
+               $('#error_message').show(300);
+			
+		}
+		
+	});
+	
+	
+});
+
+</script>
+
+</body>
+</html>
