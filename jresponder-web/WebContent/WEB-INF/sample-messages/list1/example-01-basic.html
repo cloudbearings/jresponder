@@ -48,17 +48,34 @@
 	    
     </div>
     
+    <div style="border-top: 1px solid #ddd; color:#666">
+    If you no longer wish to receive these emails,
+    <a style="color:#666;text-decoration:underline"
+        href="${config.additional.site_url}sample-site/unsubscribe.html?token=${subscription.token}">
+    click here to be unsubscribed</a> from the list.
+    </div>
+    
 </div>
 
                 <!-- ======================================================= -->
                 <!-- Plain text message body                                 -->
                 <!-- ======================================================= -->
 <div id="textbody" style="display:none"><![CDATA[
-Dear ${firstName},
+#if ($!{subscriber.propsMap.first_name})
+Dear $!{subscriber.propsMap.first_name},
+#end
 
-This is a test.
+This is an example message.
+
+Hopefully you like it.
 
 Best, John
+
+---------------------------------------------------
+If you no longer wish to receive these emails,
+follow this link to be unsubscribed from the list:
+${config.additional.site_url}sample-site/unsubscribe.html?token=${subscription.token}
+
 ]]></div>
 
                 <!-- ======================================================= -->

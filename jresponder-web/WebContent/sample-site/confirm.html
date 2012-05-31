@@ -30,7 +30,10 @@
 </div> 
 
 <script>
-	
+
+// extract token from url
+var myToken = window.location.search.replace(/.*token=([a-z0-9]+).*/,'$1');
+
 $(document).ready(function() {
 	
 	$('.message').css({display:'block'}).hide();
@@ -43,11 +46,12 @@ $(document).ready(function() {
 	q.params = JSON.stringify({
 		
 		// token, extract from url
-		token: window.location.search.replace(/.*token=([a-z]+).*/,'$1')
+		token: myToken
 		
 	});
 	
-	// make the subscribe call
+	// make the call - this can be an absolute URL and works
+    // across domains
 	$.getJSON("../public/api.action?callback=?", q, function (data) {
 		
 		// handle the result

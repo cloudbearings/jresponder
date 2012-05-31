@@ -421,6 +421,11 @@ public class SubscriberService {
 		}
 		
 		mySubscription.setSubscriptionStatus(SubscriptionStatus.ACTIVE);
+		// if next send date is null, then set it to now - so it goes to the
+		// engine to be scheduled properly
+		if (mySubscription.getNextSendDate() == null) {
+			mySubscription.setNextSendDate(new Date());
+		}
 		mainDao.persist(mySubscription);
 		
 		logger().info("Subscription (email={},message_group_name={},token={}) was confirmed!",

@@ -50,3 +50,7 @@ table td, table th {
     border-radius: 5px;
     -moz-border-radius: 5px;
 }
+
+.message.activity-message {
+	background: #eee;
+}

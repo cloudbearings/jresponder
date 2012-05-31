@@ -28,16 +28,18 @@
     ensure the email you entered is valid and try again.
     </div>
 	
-	<table class="signup-table">
-	   <tr><td class="label">Email:</td><td><input type="text" id="email" value=""/></td></tr>
-       <tr><td class="label">First Name:</td><td><input type="text" id="first_name" value=""/></td></tr>
-       <tr><td>&nbsp;</td><td><input type="button" id="subscribe_button" value="Subscribe"/></td></tr>
-	</table>
+    <div class="signup-table-wrapper">
+		<table class="signup-table">
+		   <tr><td class="label">Email:</td><td><input type="text" id="email" value=""/></td></tr>
+	       <tr><td class="label">First Name:</td><td><input type="text" id="first_name" value=""/></td></tr>
+	       <tr><td>&nbsp;</td><td><input type="button" id="subscribe_button" value="Subscribe"/></td></tr>
+		</table>
+	</div>
 	
 </div> 
 
 <script>
-	
+
 $(document).ready(function() {
 	
 	$('.message').css({display:'block'}).hide();
@@ -62,7 +64,8 @@ $(document).ready(function() {
 			}
 		});
 		
-		// make the subscribe call
+		// make the subscribe call - this can be an absolute URL and works
+		// across domains
 		$.getJSON("../public/api.action?callback=?", q, function (data) {
 			
 			// handle the result
@@ -73,6 +76,8 @@ $(document).ready(function() {
 				// show message to user
 				$('.message').hide();
 				$('#success_message').show(300);
+				// hide the input area
+				$('.signup-table-wrapper').hide(300);
 				
 			}
 			

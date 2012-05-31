@@ -18,16 +18,118 @@
 	Well, we're sorry you're unsubscribing.  But hey, that's life eh.
 	</p>
 	
-	<div id="processing_message" class="message">
+	<div id="processing_message" class="message activity-message">
 	You are being unsubscribed...
 	</div>
 	
-	<div id="success_message" class="message">
-	You have been successfully unsubscribed from this list. You also
-	have the option of being <a href="#" id="remove_link">marked as permanently removed from all lists</a>.
+	<div id="unsubscribed_message" class="message">
+		<p>
+		You have been successfully unsubscribed from this list. You also
+		have the option of being <a href="#" id="remove_link">marked as permanently removed from all lists</a>.
+		</p>
+		<p>
+		If you would like to resubscribe, please go to the
+		<a href="subscribe.html">subscribe page</a> again.
+		</p>
 	</div>
+	
+    <div id="removed_message" class="message">
+        <p>
+        You have been marked as permanently removed from all of the
+        mailing lists in this system.
+        </p>
+    </div>
+	
+    <div id="error_message" class="message">
+        An error occurred while trying to unsubscribe you!  Please try
+        again later, or contact us to let us know about the error so we can
+        fix it.
+    </div>
 
 </div>
+
+<script>
+
+// extract token from url
+var myToken = window.location.search.replace(/.*token=([a-z0-9]+).*/,'$1');
+
+$(document).ready(function() {
+    
+    $('.message').css({display:'block'}).hide();
+    $('#processing_message').show();
+    
+    // basic JSON-RPC 2 query string setup
+    var q = { jsonrpc: "2.0", method: "unsubscribe", id: Math.floor(Math.random()*2147483647) };
+    
+    // parameters
+    q.params = JSON.stringify({
+        
+        // token, extract from url
+        token: myToken
+        
+    });
+    
+    // make the call - this can be an absolute URL and works
+    // across domains
+    $.getJSON("../public/api.action?callback=?", q, function (data) {
+        
+        // handle the result
+
+        // if we have data.result, success!
+        if (data.result) {
+            
+            // show message to user
+            $('.message').hide();
+            $('#unsubscribed_message').show(300);
+            
+        }
+        
+           // otherwise it's an error
+        else {
+            
+            // data.error gives the info on what happened, but it's
+            // usually workable to just kick it back to the user
+            // with a simple message
+            
+            // show error message to user
+               $('.message').hide();
+               $('#error_message').show(300);
+            
+        }
+        
+    });
+    
+    
+    // "remove" is a separate call- this marks the subscriber (that specific
+    // email address) as being not-okay to send to and no subsequent
+    // messages will be sent to it.
+    $('#remove_link').click(function(e) {
+        
+        e.preventDefault();
+        
+        var q = { jsonrpc: "2.0", method: "remove", id: Math.floor(Math.random()*2147483647) };
+        q.params = JSON.stringify({
+            token: myToken
+        });
+
+        $.getJSON("../public/api.action?callback=?", q, function (data) {
+            if (data.result) {
+				$('.message').hide();
+				$('#removed_message').show(300);
+            }
+            else {
+				$('.message').hide();
+				$('#error_message').show(300);
+            }
+            
+        });
+        
+    });
+    
+    
+});
+
+</script>
 
 </body>
 </html>
