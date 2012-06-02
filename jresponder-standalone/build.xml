@@ -85,6 +85,11 @@
         <!-- unpack the war file into place in build/tomcat -->
         <unzip src="../jresponder-web/dist/jresponder-web.war" dest="${build}/${tomcat}/webapps/ROOT" />
 
+        <!-- copy sample messages from webapp to standalone messages folder -->
+        <mkdir dir="${build}/messages"/>
+        <copy todir="${build}/messages">
+            <fileset dir="${build}/${tomcat}/webapps/ROOT/WEB-INF/sample-messages"/>
+        </copy>
 
     </target>
 
@@ -95,9 +100,10 @@
         <zip destfile="${dist}/jresponder-standalone.zip">
             <zipfileset dir="${build}" prefix="jresponder-standalone"/>
         </zip>
-        <!-- also gzip it - just so we don't look like Windoze-lovers... -->
+        <!-- also tar+gzip it - just so we don't look like Windoze-lovers... -->
         <tar destfile="${dist}/jresponder-standalone.tar">
             <tarfileset dir="${build}" prefix="jresponder-standalone"/>
+            <tarfileset dir="${build}/tomcat/bin" prefix="jresponder-standalone/tomcat/bin" filemode="755"/>
         </tar>
         <gzip destfile="${dist}/jresponder-standalone.tar.gz" src="${dist}/jresponder-standalone.tar"/>
         <!-- delete the intermediate .tar file -->
