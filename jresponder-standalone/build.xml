@@ -11,7 +11,8 @@
     <!-- set global properties -->
     <property name="tomcat-name"    value="apache-tomcat-7.0.27"/>
                                     <!-- I would love to make this download URL be dynamic and find a close mirror - couldn't see how... -->
-    <property name="tomcat-url"     value="http://mirrors.ibiblio.org/apache/tomcat/tomcat-7/v7.0.27/bin/apache-tomcat-7.0.27.tar.gz"/>
+    <!-- property name="tomcat-url"     value="http://mirrors.ibiblio.org/apache/tomcat/tomcat-7/v7.0.27/bin/apache-tomcat-7.0.27.tar.gz"/ -->
+    <property name="tomcat-url"     value="http://apache.mirrors.pair.com/tomcat/tomcat-7/v7.0.27/bin/apache-tomcat-7.0.27.tar.gz"/>
     <property name="tomcat"         value="tomcat"/>
     <property name="downloads"      location="downloads"/>
     <property name="resources"      location="resources"/>
